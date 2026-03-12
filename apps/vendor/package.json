@@ -14,9 +14,9 @@
     "@rebookindia/types": "*",
     "@rebookindia/ui": "*",
     "@rebookindia/utils": "*",
-    "@studio-freight/lenis": "latest",
+    "lenis": "latest",
     "appwrite": "^23.0.0",
-    "next": "14.2.3",
+    "next": "^14.2.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.6.0"
@@ -26,8 +26,8 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "14.2.3",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.23",
     "postcss": "latest",
     "tailwindcss": "^3.4.14",
     "typescript": "latest"

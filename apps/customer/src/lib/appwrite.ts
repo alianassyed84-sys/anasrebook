@@ -23,6 +23,7 @@ export const COLLECTIONS = {
   NOTIFICATIONS:  "notifications",
   BOOKPASS:       "bookpass_subscriptions",
   DELIVERY_ZONES: "delivery_zones",
+  SETTINGS:       "platform_settings",
 };
 
 // Google OAuth login function — used by all 3 apps

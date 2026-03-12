@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { 
   ShieldCheck, 
   MapPin, 
@@ -24,7 +24,7 @@ const PAYMENT_METHODS = [
   { id: "cod", name: "Cash on Delivery", icon: Truck },
 ];
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const bookIdParam = searchParams.get("bookId");
@@ -366,5 +366,17 @@ export default function CheckoutPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-brand-background text-brand-primary">
+        Loading Checkout...
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
   );
 }
