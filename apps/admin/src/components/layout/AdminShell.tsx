@@ -166,7 +166,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               )}
             </div>
             
-            <a href="http://localhost:4000" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:bg-brand-background hover:text-brand-primary rounded-xl transition-all font-bold text-xs">
+            <a href={process.env.NEXT_PUBLIC_CUSTOMER_URL || "http://localhost:4000"} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:bg-brand-background hover:text-brand-primary rounded-xl transition-all font-bold text-xs">
               <ExternalLink size={18} />
               Visit Store
             </a>

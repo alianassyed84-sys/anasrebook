@@ -36,7 +36,7 @@ export default function AdminPortalInfoPage() {
 
         <div className="pt-4">
           <a 
-            href="http://localhost:4002" 
+            href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:4002"} 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-brand-primary text-white px-10 py-5 rounded-3xl font-black text-xl hover:bg-brand-secondary transition-all shadow-2xl shadow-brand-primary/30"

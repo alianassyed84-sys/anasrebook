@@ -12,7 +12,7 @@ export default function BecomeVendorPage() {
           manage your orders, and grow your business with our dedicated vendor portal.
         </p>
         <a 
-          href="http://localhost:4001" 
+          href={process.env.NEXT_PUBLIC_VENDOR_URL || "http://localhost:4001"} 
           target="_blank" 
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-brand-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-brand-primary/90 transition-all"

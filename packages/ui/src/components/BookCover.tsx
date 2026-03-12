@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Book as BookIcon } from "lucide-react";
+import { Book } from "lucide-react";
+const BookIcon = Book as any;
 import Image from "next/image";
 
 interface BookCoverProps {
@@ -38,7 +39,7 @@ export function BookCover({ isbn, title, coverUrl, imageId, size = "M", classNam
       <div className={`bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-slate-800
                        flex flex-col items-center justify-center
                        rounded-md text-slate-500 dark:text-slate-400 ${className}`}>
-        <BookIcon size={size === "S" ? 24 : size === "L" ? 48 : 32} className="opacity-50" />
+        <BookIcon size={String(size === "S" ? 24 : size === "L" ? 48 : 32)} className="opacity-50" />
         {title && size !== "S" && (
           <span className="text-[10px] sm:text-xs text-center px-3 mt-3 opacity-70 line-clamp-2 font-medium">
             {title}

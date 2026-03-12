@@ -106,13 +106,13 @@ export default function BookDetailPage() {
     const bookId = book.$id || book.id;
     const coverUrl = book.imageIds?.[0] || book.cover_url || book.coverUrl;
     
-    const ourPrice = book.sellingPrice || book.ourPrice || 0;
-    const mrp = book.mrp || 0;
-    const savings = mrp - ourPrice;
+    const ourPrice = Number(book.sellingPrice || book.ourPrice || 0);
+    const mrp = Number(book.mrp || 0);
+    const savings = Number(mrp - ourPrice);
     
     // Derived dummy earnings since old code did not have riEarn
-    const vendorEarn = book.vendorEarn || Math.round(ourPrice * 0.8);
-    const riEarn = book.riEarn || Math.round(ourPrice * 0.2);
+    const vendorEarn = Number(book.vendorEarn || Math.round(ourPrice * 0.8));
+    const riEarn = Number(book.riEarn || Math.round(ourPrice * 0.2));
 
     const waBook = `https://wa.me/918801550189?text=Hi%20RebookIndia,%20I%20need%20help%20with%20buying%20${book.title}.`;
     let waVendor = waBook;

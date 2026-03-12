@@ -90,7 +90,7 @@ export const AdminSidebar = () => {
         
         <div className="pt-4 mt-4 border-t border-white/10">
           <a 
-            href="http://localhost:4000" 
+            href={process.env.NEXT_PUBLIC_CUSTOMER_URL || "http://localhost:4000"} 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-brand-light/70 hover:bg-white/5 hover:text-white transition-all group"

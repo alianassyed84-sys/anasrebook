@@ -162,7 +162,7 @@ export const Navbar = () => {
             {/* Admin Panel Button — only for admin/superAdmin */}
             {authLoaded && isAdmin && (
               <a
-                href="http://localhost:4002"
+                  href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:4002"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden sm:flex items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-xl text-xs font-black hover:bg-brand-secondary transition-all shadow-lg shadow-brand-primary/20"
@@ -175,7 +175,7 @@ export const Navbar = () => {
             {/* Vendor Panel Button — only for vendors */}
             {authLoaded && isVendor && (
               <a
-                href="http://localhost:4001"
+                  href={process.env.NEXT_PUBLIC_VENDOR_URL || "http://localhost:4001"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden sm:flex items-center gap-2 bg-brand-success text-white px-4 py-2 rounded-xl text-xs font-black hover:opacity-90 transition-all shadow-lg"
@@ -246,7 +246,7 @@ export const Navbar = () => {
                         {/* Admin Panel Link — in dropdown */}
                         {isAdmin && (
                           <a
-                            href="http://localhost:4002"
+                            href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:4002"}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => setProfileOpen(false)}
@@ -260,7 +260,7 @@ export const Navbar = () => {
                         {/* Vendor Panel Link — in dropdown */}
                         {isVendor && (
                           <a
-                            href="http://localhost:4001"
+                            href={process.env.NEXT_PUBLIC_VENDOR_URL || "http://localhost:4001"}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => setProfileOpen(false)}
@@ -330,13 +330,13 @@ export const Navbar = () => {
 
               {/* Mobile Admin/Vendor Panel */}
               {isAdmin && (
-                <a href="http://localhost:4002" target="_blank" rel="noopener noreferrer"
+                <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:4002"} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-3 py-3 text-brand-primary font-black border-b border-gray-50">
                   <ShieldCheck size={18} /> Admin Panel ↗
                 </a>
               )}
               {isVendor && (
-                <a href="http://localhost:4001" target="_blank" rel="noopener noreferrer"
+                <a href={process.env.NEXT_PUBLIC_VENDOR_URL || "http://localhost:4001"} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-3 py-3 text-green-700 font-black border-b border-gray-50">
                   <Store size={18} /> Vendor Panel ↗
                 </a>
