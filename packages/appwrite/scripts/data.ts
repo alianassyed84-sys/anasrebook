@@ -1,0 +1,252 @@
+export const DELIVERY_ZONES = [
+  { zoneId: "zone_1", zoneName: "Hyper Local", minKm: 0, maxKm: 5, buyerCharge: 25, logisticsCost: 15, yourMargin: 10, isActive: true },
+  { zoneId: "zone_2", zoneName: "Local", minKm: 5, maxKm: 15, buyerCharge: 40, logisticsCost: 25, yourMargin: 15, isActive: true },
+  { zoneId: "zone_3", zoneName: "City", minKm: 15, maxKm: 50, buyerCharge: 60, logisticsCost: 40, yourMargin: 20, isActive: true },
+  { zoneId: "zone_4", zoneName: "Near State", minKm: 50, maxKm: 200, buyerCharge: 90, logisticsCost: 60, yourMargin: 30, isActive: true },
+  { zoneId: "zone_5", zoneName: "State", minKm: 200, maxKm: 500, buyerCharge: 120, logisticsCost: 80, yourMargin: 40, isActive: true },
+  { zoneId: "zone_6", zoneName: "Pan India", minKm: 500, maxKm: 9999, buyerCharge: 160, logisticsCost: 110, yourMargin: 50, isActive: true },
+];
+
+export const DEMO_USERS = [
+  {
+    userId: "demo_student",
+    name: "Rahul Sharma",
+    email: "student@rebookindia.in",
+    password: "Student@123",
+    phone: "+919876543210",
+    city: "Hyderabad",
+    pincode: "500001",
+    isBookPass: true,
+    createdAt: new Date().toISOString()
+  },
+  {
+    userId: "demo_vendor",
+    name: "Suresh Kumar",
+    email: "vendor@rebookindia.in",
+    password: "Vendor@123",
+    phone: "+919876543211",
+    city: "Hyderabad",
+    pincode: "500001",
+    isBookPass: false,
+    createdAt: new Date().toISOString()
+  },
+  {
+    userId: "demo_admin",
+    name: "RebookIndia Admin",
+    email: "admin@rebookindia.in",
+    password: "Admin@123",
+    phone: "+919000000000",
+    city: "Hyderabad",
+    pincode: "500001",
+    isBookPass: false,
+    createdAt: new Date().toISOString()
+  }
+];
+
+export const VENDORS = [
+  {
+    vendorId: "v_1",
+    userId: "demo_vendor",
+    shopName: "PaperShop Books",
+    ownerName: "Suresh Kumar",
+    phone: "9876543211",
+    email: "vendor@rebookindia.in",
+    address: "Shop 12, Abids",
+    city: "Hyderabad",
+    state: "Telangana",
+    pincode: "500001",
+    latitude: 17.3850,
+    longitude: 78.4867,
+    shopPhotoId: "p_1",
+    aadhaarDocId: "a_1",
+    bankAccountNo: "XXXX4521",
+    bankIFSC: "HDFC0001234",
+    bankName: "HDFC Bank",
+    status: "approved",
+    subscriptionPlan: "gold",
+    commissionRate: 10.0,
+    totalEarnings: 28050.0,
+    pendingPayout: 1843.0,
+    rating: 4.8,
+    totalReviews: 234,
+    totalSales: 187,
+    isFreeCommission: false,
+    createdAt: new Date().toISOString()
+  },
+  {
+    vendorId: "v_2",
+    userId: "u_v2",
+    shopName: "BookBazaar",
+    ownerName: "Priya Reddy",
+    phone: "+919876543212",
+    email: "priya@example.com",
+    address: "Adyar",
+    city: "Chennai",
+    state: "Tamil Nadu",
+    pincode: "600001",
+    latitude: 13.0827,
+    longitude: 80.2707,
+    shopPhotoId: "p_2",
+    aadhaarDocId: "a_2",
+    bankAccountNo: "XXXX1234",
+    bankIFSC: "ICIC0005678",
+    bankName: "ICICI Bank",
+    status: "approved",
+    subscriptionPlan: "silver",
+    commissionRate: 12.0,
+    totalEarnings: 18900.0,
+    pendingPayout: 0.0,
+    rating: 4.6,
+    totalReviews: 189,
+    totalSales: 143,
+    isFreeCommission: false,
+    createdAt: new Date().toISOString()
+  },
+  {
+    vendorId: "v_3",
+    userId: "u_v3",
+    shopName: "StudyZone Store",
+    ownerName: "Amit Patel",
+    phone: "+919876543213",
+    email: "amit@example.com",
+    address: "Navrangpura",
+    city: "Ahmedabad",
+    state: "Gujarat",
+    pincode: "380001",
+    latitude: 23.0225,
+    longitude: 72.5714,
+    shopPhotoId: "p_3",
+    aadhaarDocId: "a_3",
+    bankAccountNo: "XXXX9876",
+    bankIFSC: "SBI0004321",
+    bankName: "SBI Bank",
+    status: "approved",
+    subscriptionPlan: "silver",
+    commissionRate: 12.0,
+    totalEarnings: 14200.0,
+    pendingPayout: 0.0,
+    rating: 4.5,
+    totalReviews: 156,
+    totalSales: 98,
+    isFreeCommission: false,
+    createdAt: new Date().toISOString()
+  },
+  {
+    vendorId: "v_4",
+    userId: "u_v4",
+    shopName: "KitaabGhar",
+    ownerName: "Ravi Singh",
+    phone: "+919876543214",
+    email: "ravi@example.com",
+    address: "Chandni Chowk",
+    city: "Delhi",
+    state: "Delhi",
+    pincode: "110001",
+    latitude: 28.6139,
+    longitude: 77.2090,
+    shopPhotoId: "p_4",
+    aadhaarDocId: "a_4",
+    bankAccountNo: "XXXX1111",
+    bankIFSC: "PNB0002222",
+    bankName: "PNB Bank",
+    status: "approved",
+    subscriptionPlan: "free",
+    commissionRate: 15.0,
+    totalEarnings: 6750.0,
+    pendingPayout: 0.0,
+    rating: 4.3,
+    totalReviews: 67,
+    totalSales: 45,
+    isFreeCommission: false,
+    createdAt: new Date().toISOString()
+  },
+  {
+    vendorId: "v_5",
+    userId: "u_v5",
+    shopName: "OldBookMart",
+    ownerName: "Sunita Joshi",
+    phone: "+919876543215",
+    email: "sunita@example.com",
+    address: "Kothrud",
+    city: "Pune",
+    state: "Maharashtra",
+    pincode: "411001",
+    latitude: 18.5204,
+    longitude: 73.8567,
+    shopPhotoId: "p_5",
+    aadhaarDocId: "a_5",
+    bankAccountNo: "XXXX3333",
+    bankIFSC: "AXIS0004444",
+    bankName: "Axis Bank",
+    status: "pending",
+    subscriptionPlan: "free",
+    commissionRate: 15.0,
+    totalEarnings: 0.0,
+    pendingPayout: 0.0,
+    rating: 0.0,
+    totalReviews: 0,
+    totalSales: 0,
+    isFreeCommission: true,
+    createdAt: new Date().toISOString()
+  }
+];
+
+const getDiscount = (mrp: number, sp: number) => Math.round(((mrp - sp) / mrp) * 100);
+
+export const BOOKS = [
+  // SCHOOL BOOKS
+  { bookId: "b_1", vendorId: "v_1", title: "NCERT Mathematics Class 10", author: "NCERT", category: "school", mrp: 85, sellingPrice: 35, discountPercent: getDiscount(85, 35), condition: "good", imageIds: ["/books/maths.png"], isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788174501547", coverUrl: "/books/maths.png" },
+  { bookId: "b_2", vendorId: "v_1", title: "NCERT Science Class 10", author: "NCERT", category: "school", mrp: 90, sellingPrice: 40, discountPercent: getDiscount(90, 40), condition: "like_new", imageIds: ["https://picsum.photos/400/600?random=2"], isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788174501554", coverUrl: "" },
+  { bookId: "b_3", vendorId: "v_2", title: "NCERT History Class 12", author: "NCERT", category: "school", mrp: 85, sellingPrice: 30, discountPercent: getDiscount(85, 30), condition: "good", imageIds: ["https://picsum.photos/400/600?random=3"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788174506511", coverUrl: "" },
+  { bookId: "b_4", vendorId: "v_3", title: "NCERT Physics Class 11", author: "NCERT", category: "school", mrp: 120, sellingPrice: 55, discountPercent: getDiscount(120, 55), condition: "fair", imageIds: ["https://picsum.photos/400/600?random=4"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788174505668", coverUrl: "" },
+  { bookId: "b_5", vendorId: "v_4", title: "NCERT Chemistry Class 12", author: "NCERT", category: "school", mrp: 100, sellingPrice: 45, discountPercent: getDiscount(100, 45), condition: "good", imageIds: ["https://picsum.photos/400/600?random=5"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788174507167", coverUrl: "" },
+  { bookId: "b_6", vendorId: "v_1", title: "NCERT Biology Class 12", author: "NCERT", category: "school", mrp: 95, sellingPrice: 40, discountPercent: getDiscount(95, 40), condition: "like_new", imageIds: ["https://picsum.photos/400/600?random=6"], isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9780000000000", coverUrl: "" },
+  { bookId: "b_7", vendorId: "v_2", title: "NCERT English Flamingo Cl.12", author: "NCERT", category: "school", mrp: 75, sellingPrice: 28, discountPercent: getDiscount(75, 28), condition: "good", imageIds: ["https://picsum.photos/400/600?random=7"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788174506504", coverUrl: "" },
+
+  // COMPETITIVE EXAM
+  { bookId: "b_8", vendorId: "v_1", title: "DC Pandey Physics NEET", author: "D.C. Pandey", category: "neet", mrp: 650, sellingPrice: 280, discountPercent: getDiscount(650, 280), condition: "good", imageIds: ["https://picsum.photos/400/600?random=8"], isFeatured: true, isSponsored: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9789325299399", coverUrl: "https://books.google.com/books/content?id=SIJjEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" },
+  { bookId: "b_9", vendorId: "v_2", title: "Errorless Chemistry NEET", author: "Universal", category: "neet", mrp: 850, sellingPrice: 380, discountPercent: getDiscount(850, 380), condition: "like_new", imageIds: ["https://picsum.photos/400/600?random=9"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9780000000000", coverUrl: "" },
+  { bookId: "b_10", vendorId: "v_3", title: "MTG NCERT Biology NEET", author: "MTG", category: "neet", mrp: 520, sellingPrice: 220, discountPercent: getDiscount(520, 220), condition: "good", imageIds: ["https://picsum.photos/400/600?random=10"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9789355558930", coverUrl: "https://books.google.com/books/content?id=eV_pEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" },
+  { bookId: "b_11", vendorId: "v_4", title: "Laxmikant Indian Polity", author: "M. Laxmikant", category: "upsc", mrp: 750, sellingPrice: 320, discountPercent: getDiscount(750, 320), condition: "good", imageIds: ["https://picsum.photos/400/600?random=11"], isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9789389538472", coverUrl: "" },
+  { bookId: "b_12", vendorId: "v_1", title: "Spectrum Modern History", author: "Rajiv Ahir", category: "upsc", mrp: 420, sellingPrice: 180, discountPercent: getDiscount(420, 180), condition: "like_new", imageIds: ["https://picsum.photos/400/600?random=12"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788179307212", coverUrl: "" },
+  { bookId: "b_13", vendorId: "v_2", title: "JEE Mathematics RD Sharma", author: "R.D. Sharma", category: "neet", mrp: 890, sellingPrice: 390, discountPercent: getDiscount(890, 390), condition: "good", imageIds: ["/books/maths.png"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9780000000000", coverUrl: "/books/maths.png" },
+  { bookId: "b_14", vendorId: "v_3", title: "Arihant General Knowledge", author: "Manohar Pandey", category: "upsc", mrp: 375, sellingPrice: 150, discountPercent: getDiscount(375, 150), condition: "like_new", imageIds: ["https://picsum.photos/400/600?random=14"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9789325295575", coverUrl: "https://books.google.com/books/content?id=mtBSEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" },
+
+  // NOVELS
+  { bookId: "b_15", vendorId: "v_1", title: "The Alchemist", author: "Paulo Coelho", category: "novel", mrp: 299, sellingPrice: 99, discountPercent: getDiscount(299, 99), condition: "good", imageIds: ["/books/alchemist.png"], isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9780061741241", coverUrl: "/books/alchemist.png" },
+  { bookId: "b_16", vendorId: "v_4", title: "Atomic Habits", author: "James Clear", category: "novel", mrp: 499, sellingPrice: 199, discountPercent: getDiscount(499, 199), condition: "like_new", imageIds: ["https://picsum.photos/400/600?random=16"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9781473537804", coverUrl: "https://books.google.com/books/content?id=fFCjDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" },
+  { bookId: "b_17", vendorId: "v_2", title: "Wings of Fire", author: "APJ Abdul Kalam", category: "novel", mrp: 195, sellingPrice: 75, discountPercent: getDiscount(195, 75), condition: "good", imageIds: ["https://picsum.photos/400/600?random=17"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9780000000000", coverUrl: "" },
+
+  // COLLEGE
+  { bookId: "b_18", vendorId: "v_3", title: "Engineering Maths BS Grewal", author: "B.S. Grewal", category: "college", mrp: 750, sellingPrice: 300, discountPercent: getDiscount(750, 300), condition: "good", imageIds: ["/books/maths.png"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9788174091154", coverUrl: "/books/maths.png" },
+  { bookId: "b_19", vendorId: "v_1", title: "Data Structures - Thareja", author: "Reema Thareja", category: "college", mrp: 450, sellingPrice: 180, discountPercent: getDiscount(450, 180), condition: "like_new", imageIds: ["https://picsum.photos/400/600?random=19"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9780198099307", coverUrl: "https://books.google.com/books/content?id=CYm3oQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" },
+  { bookId: "b_20", vendorId: "v_4", title: "Principles of Management", author: "P.C. Tripathi", category: "college", mrp: 380, sellingPrice: 150, discountPercent: getDiscount(380, 150), condition: "fair", imageIds: ["https://picsum.photos/400/600?random=20"], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), isbn: "9781283923293", coverUrl: "" },
+];
+
+export const ORDERS = [
+  { orderId: "o_1", userId: "demo_student", vendorId: "v_1", bookId: "b_8", bookTitle: "DC Pandey Physics NEET", bookImageId: "im_8", quantity: 1, bookPrice: 280, vendorPincode: "500001", buyerPincode: "600001", distanceKm: 628, deliveryZone: "Pan India", deliveryCharge: 160, logisticsCost: 110, deliveryMargin: 50, handlingFee: 0, totalAmount: 440, commissionRate: 10, commissionAmount: 28, vendorPayout: 252, buyerName: "Anjali Mehta", buyerPhone: "9000000001", deliveryAddress: "Adyar, Chennai", deliveryCity: "Chennai", deliveryPincode: "600001", paymentMethod: "upi", paymentStatus: "paid", orderStatus: "delivered", isPayoutReleased: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { orderId: "o_2", userId: "u_2", vendorId: "v_1", bookId: "b_2", bookTitle: "NCERT Science Class 10", bookImageId: "im_2", quantity: 1, bookPrice: 40, vendorPincode: "500001", buyerPincode: "500003", distanceKm: 3, deliveryZone: "Hyper Local", deliveryCharge: 25, logisticsCost: 15, deliveryMargin: 10, handlingFee: 0, totalAmount: 65, commissionRate: 10, commissionAmount: 4, vendorPayout: 36, buyerName: "Rohit Verma", buyerPhone: "9000000002", deliveryAddress: "Secunderabad", deliveryCity: "Hyderabad", deliveryPincode: "500003", paymentMethod: "upi", paymentStatus: "paid", orderStatus: "in_transit", isPayoutReleased: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { orderId: "o_3", userId: "u_3", vendorId: "v_1", bookId: "b_15", bookTitle: "The Alchemist", bookImageId: "im_15", quantity: 1, bookPrice: 99, vendorPincode: "500001", buyerPincode: "400001", distanceKm: 700, deliveryZone: "Pan India", deliveryCharge: 160, logisticsCost: 110, deliveryMargin: 50, handlingFee: 0, totalAmount: 259, commissionRate: 10, commissionAmount: 9.9, vendorPayout: 89.1, buyerName: "Sneha Gupta", buyerPhone: "9000000003", deliveryAddress: "Colaba, Mumbai", deliveryCity: "Mumbai", deliveryPincode: "400001", paymentMethod: "card", paymentStatus: "paid", orderStatus: "packed", isPayoutReleased: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { orderId: "o_4", userId: "u_4", vendorId: "v_1", bookId: "b_11", bookTitle: "Laxmikant Polity", bookImageId: "im_11", quantity: 1, bookPrice: 320, vendorPincode: "500001", buyerPincode: "560001", distanceKm: 570, deliveryZone: "Pan India", deliveryCharge: 160, logisticsCost: 110, deliveryMargin: 50, handlingFee: 0, totalAmount: 480, commissionRate: 10, commissionAmount: 32, vendorPayout: 288, buyerName: "Arjun Nair", buyerPhone: "9000000004", deliveryAddress: "Indiranagar, Bangalore", deliveryCity: "Bangalore", deliveryPincode: "560001", paymentMethod: "upi", paymentStatus: "paid", orderStatus: "placed", isPayoutReleased: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { orderId: "o_5", userId: "u_5", vendorId: "v_1", bookId: "b_1", bookTitle: "NCERT Maths Cl10", bookImageId: "im_1", quantity: 1, bookPrice: 35, vendorPincode: "500001", buyerPincode: "500001", distanceKm: 1, deliveryZone: "Hyper Local", deliveryCharge: 25, logisticsCost: 15, deliveryMargin: 10, handlingFee: 0, totalAmount: 60, commissionRate: 10, commissionAmount: 3.5, vendorPayout: 31.5, buyerName: "Kavya Sharma", buyerPhone: "9000000005", deliveryAddress: "Kukatpally, Hyderabad", deliveryCity: "Hyderabad", deliveryPincode: "500001", paymentMethod: "cod", paymentStatus: "pending", orderStatus: "delivered", isPayoutReleased: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { orderId: "o_6", userId: "u_6", vendorId: "v_1", bookId: "b_16", bookTitle: "Atomic Habits", bookImageId: "im_16", quantity: 1, bookPrice: 199, vendorPincode: "500001", buyerPincode: "110001", distanceKm: 1500, deliveryZone: "Pan India", deliveryCharge: 160, logisticsCost: 110, deliveryMargin: 50, handlingFee: 0, totalAmount: 359, commissionRate: 10, commissionAmount: 19.9, vendorPayout: 179.1, buyerName: "Dev Kapoor", buyerPhone: "9000000006", deliveryAddress: "Connaught Place, Delhi", deliveryCity: "Delhi", deliveryPincode: "110001", paymentMethod: "card", paymentStatus: "paid", orderStatus: "delivered", isPayoutReleased: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { orderId: "o_7", userId: "u_7", vendorId: "v_1", bookId: "b_18", bookTitle: "Engineering Maths", bookImageId: "im_18", quantity: 1, bookPrice: 300, vendorPincode: "500001", buyerPincode: "500012", distanceKm: 4, deliveryZone: "Hyper Local", deliveryCharge: 25, logisticsCost: 15, deliveryMargin: 10, handlingFee: 0, totalAmount: 325, commissionRate: 10, commissionAmount: 30, vendorPayout: 270, buyerName: "Meera Iyer", buyerPhone: "9000000007", deliveryAddress: "Gachibowli, Hyderabad", deliveryCity: "Hyderabad", deliveryPincode: "500012", paymentMethod: "upi", paymentStatus: "paid", orderStatus: "in_transit", isPayoutReleased: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { orderId: "o_8", userId: "u_8", vendorId: "v_1", bookId: "b_10", bookTitle: "MTG Biology NEET", bookImageId: "im_10", quantity: 1, bookPrice: 220, vendorPincode: "500001", buyerPincode: "411001", distanceKm: 560, deliveryZone: "Pan India", deliveryCharge: 160, logisticsCost: 110, deliveryMargin: 50, handlingFee: 0, totalAmount: 380, commissionRate: 10, commissionAmount: 22, vendorPayout: 198, buyerName: "Sanjay Tiwari", buyerPhone: "9000000008", deliveryAddress: "Kothrud, Pune", deliveryCity: "Pune", deliveryPincode: "411001", paymentMethod: "upi", paymentStatus: "paid", orderStatus: "delivered", isPayoutReleased: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+];
+
+export const REVIEWS = [
+  { reviewId: "rev_1", orderId: "o_1", userId: "demo_student", vendorId: "v_1", rating: 5, comment: "Exactly as described! Saved Rs.370 on my NEET book!", createdAt: new Date().toISOString() },
+  { reviewId: "rev_2", orderId: "o_2", userId: "u_2", vendorId: "v_1", rating: 5, comment: "Got class 10 science for just Rs.40. Will order again!", createdAt: new Date().toISOString() },
+  { reviewId: "rev_3", orderId: "o_3", userId: "u_3", vendorId: "v_2", rating: 4, comment: "Good condition book. Slight delay but overall good.", createdAt: new Date().toISOString() },
+  { reviewId: "rev_4", orderId: "o_4", userId: "u_4", vendorId: "v_1", rating: 5, comment: "Best platform! Vendor honest about condition. Perfect.", createdAt: new Date().toISOString() },
+  { reviewId: "rev_5", orderId: "o_5", userId: "u_5", vendorId: "v_3", rating: 4, comment: "Saved Rs.470 on JEE books! Packaging was really good.", createdAt: new Date().toISOString() },
+];
+
+export const NOTIFICATIONS = [
+  { notificationId: "n_1", recipientId: "v_1", recipientType: "vendor", type: "new_order", title: "New Order #RI1004", message: "Laxmikant Polity Rs.320. Pack in 12hrs!", isRead: false, createdAt: new Date().toISOString() },
+  { notificationId: "n_2", recipientId: "v_1", recipientType: "vendor", type: "new_order", title: "New Order #RI1003", message: "The Alchemist Rs.99. Pack in 12hrs!", isRead: false, createdAt: new Date().toISOString() },
+  { notificationId: "n_3", recipientId: "v_1", recipientType: "vendor", type: "payout_sent", title: "Payout Sent", message: "Rs.1,843 transferred to your bank account ending XXXX4521", isRead: true, createdAt: new Date().toISOString() },
+  { notificationId: "n_4", recipientId: "v_1", recipientType: "vendor", type: "order_delivered", title: "Order Delivered", message: "Order #RI1001 delivered to Anjali! She gave 5 stars ⭐⭐⭐⭐⭐", isRead: true, createdAt: new Date().toISOString() },
+];
+
+export const BOOKPASS_SUBSCRIPTIONS = [];

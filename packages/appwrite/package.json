@@ -1,0 +1,19 @@
+{
+  "name": "@rebookindia/appwrite",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "seed": "ts-node scripts/seed.ts",
+    "fix-passwords": "ts-node scripts/fixPasswords.ts"
+  },
+  "dependencies": {
+    "appwrite": "^23.0.0",
+    "node-appwrite": "latest"
+  },
+  "devDependencies": {
+    "dotenv": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  }
+}

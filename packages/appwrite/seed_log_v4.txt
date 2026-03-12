@@ -1,0 +1,79 @@
+﻿[dotenv@17.3.1] injecting env (3) from .env -- tip: ΓÜÖ∩╕Å  specify custom .env file path with { path: '/custom/path/.env' }
+≡ƒî▒ Starting RebookIndia NextGen Seed Script...
+
+≡ƒæñ Creating Demo Users in Auth...
+  Γä╣∩╕Å Auth user student@rebookindia.in already exists.
+  Γä╣∩╕Å Auth user vendor@rebookindia.in already exists.
+  Γä╣∩╕Å Auth user admin@rebookindia.in already exists.
+
+≡ƒôª Setting up Database...
+
+≡ƒÅù∩╕Å Defining Schema Collections...
+  Γä╣∩╕Å Collection Users exists.
+  Γä╣∩╕Å Collection Vendors exists.
+  Γä╣∩╕Å Collection Books exists.
+  Γä╣∩╕Å Collection Orders exists.
+  Γä╣∩╕Å Collection Reviews exists.
+  Γä╣∩╕Å Collection Disputes exists.
+  Γä╣∩╕Å Collection Notifications exists.
+  Γä╣∩╕Å Collection BookpassSubscriptions exists.
+  Γä╣∩╕Å Collection DeliveryZones exists.
+
+≡ƒ¬ú Setting up Storage Buckets...
+
+ΓÅ│ Waiting 5 seconds for Appwrite to provision attributes...
+
+≡ƒôä Inserting Initial Schema Data...
+  Γ£à Inserted delivery_zones: zone_1
+  Γ£à Inserted delivery_zones: zone_2
+  Γ£à Inserted delivery_zones: zone_3
+  Γ£à Inserted delivery_zones: zone_4
+  Γ£à Inserted delivery_zones: zone_5
+  Γ£à Inserted delivery_zones: zone_6
+  Γä╣∩╕Å Document demo_student exists.
+  Γ£à Inserted users: demo_vendor
+  Γä╣∩╕Å Document demo_admin exists.
+  Γ£à Inserted vendors: v_1
+  Γ£à Inserted vendors: v_2
+  Γ£à Inserted vendors: v_3
+  Γ£à Inserted vendors: v_4
+  Γ£à Inserted vendors: v_5
+  Γ£à Inserted books: b_1
+  Γ£à Inserted books: b_2
+  Γ£à Inserted books: b_3
+  Γ£à Inserted books: b_4
+  Γ£à Inserted books: b_5
+  Γ£à Inserted books: b_6
+  Γ£à Inserted books: b_7
+  Γ£à Inserted books: b_8
+  Γ£à Inserted books: b_9
+  Γ£à Inserted books: b_10
+  Γ£à Inserted books: b_11
+  Γ£à Inserted books: b_12
+  Γ£à Inserted books: b_13
+  Γ£à Inserted books: b_14
+  Γ£à Inserted books: b_15
+  Γ£à Inserted books: b_16
+  Γ£à Inserted books: b_17
+  Γ£à Inserted books: b_18
+  Γ£à Inserted books: b_19
+  Γ£à Inserted books: b_20
+  Γ£à Inserted orders: o_1
+  Γ£à Inserted orders: o_2
+  Γ£à Inserted orders: o_3
+  Γ£à Inserted orders: o_4
+  Γ£à Inserted orders: o_5
+  Γ£à Inserted orders: o_6
+  Γ£à Inserted orders: o_7
+  Γ£à Inserted orders: o_8
+  Γ£à Inserted reviews: rev_1
+  Γ£à Inserted reviews: rev_2
+  Γ£à Inserted reviews: rev_3
+  Γ£à Inserted reviews: rev_4
+  Γ£à Inserted reviews: rev_5
+  Γ£à Inserted notifications: n_1
+  Γ£à Inserted notifications: n_2
+  Γ£à Inserted notifications: n_3
+  Γ£à Inserted notifications: n_4
+
+≡ƒÄë NextGen Schema Seeding complete!

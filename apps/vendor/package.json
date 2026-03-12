@@ -1,0 +1,35 @@
+{
+  "name": "vendor",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 4001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rebookindia/appwrite": "*",
+    "@rebookindia/types": "*",
+    "@rebookindia/ui": "*",
+    "@rebookindia/utils": "*",
+    "@studio-freight/lenis": "latest",
+    "appwrite": "^23.0.0",
+    "next": "14.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "14.2.3",
+    "postcss": "latest",
+    "tailwindcss": "^3.4.14",
+    "typescript": "latest"
+  }
+}

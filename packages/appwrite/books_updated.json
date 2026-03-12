@@ -1,0 +1,367 @@
+[
+  {
+    "bookId": "b_1",
+    "vendorId": "v_1",
+    "title": "NCERT Mathematics Class 10",
+    "author": "NCERT",
+    "category": "school",
+    "mrp": 85,
+    "sellingPrice": 35,
+    "discountPercent": 59,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=1"
+    ],
+    "isFeatured": true,
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788174501547",
+    "coverUrl": "https://books.google.com/books/content?id=NU4yAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+  },
+  {
+    "bookId": "b_2",
+    "vendorId": "v_1",
+    "title": "NCERT Science Class 10",
+    "author": "NCERT",
+    "category": "school",
+    "mrp": 90,
+    "sellingPrice": 40,
+    "discountPercent": 56,
+    "condition": "like_new",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=2"
+    ],
+    "isFeatured": true,
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788174501554",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_3",
+    "vendorId": "v_2",
+    "title": "NCERT History Class 12",
+    "author": "NCERT",
+    "category": "school",
+    "mrp": 85,
+    "sellingPrice": 30,
+    "discountPercent": 65,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=3"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788174506511",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_4",
+    "vendorId": "v_3",
+    "title": "NCERT Physics Class 11",
+    "author": "NCERT",
+    "category": "school",
+    "mrp": 120,
+    "sellingPrice": 55,
+    "discountPercent": 54,
+    "condition": "fair",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=4"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788174505668",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_5",
+    "vendorId": "v_4",
+    "title": "NCERT Chemistry Class 12",
+    "author": "NCERT",
+    "category": "school",
+    "mrp": 100,
+    "sellingPrice": 45,
+    "discountPercent": 55,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=5"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788174507167",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_6",
+    "vendorId": "v_1",
+    "title": "NCERT Biology Class 12",
+    "author": "NCERT",
+    "category": "school",
+    "mrp": 95,
+    "sellingPrice": 40,
+    "discountPercent": 58,
+    "condition": "like_new",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=6"
+    ],
+    "isFeatured": true,
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9780000000000",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_7",
+    "vendorId": "v_2",
+    "title": "NCERT English Flamingo Cl.12",
+    "author": "NCERT",
+    "category": "school",
+    "mrp": 75,
+    "sellingPrice": 28,
+    "discountPercent": 63,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=7"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788174506504",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_8",
+    "vendorId": "v_1",
+    "title": "DC Pandey Physics NEET",
+    "author": "D.C. Pandey",
+    "category": "neet",
+    "mrp": 650,
+    "sellingPrice": 280,
+    "discountPercent": 57,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=8"
+    ],
+    "isFeatured": true,
+    "isSponsored": true,
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9789325299399",
+    "coverUrl": "https://books.google.com/books/content?id=SIJjEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+  },
+  {
+    "bookId": "b_9",
+    "vendorId": "v_2",
+    "title": "Errorless Chemistry NEET",
+    "author": "Universal",
+    "category": "neet",
+    "mrp": 850,
+    "sellingPrice": 380,
+    "discountPercent": 55,
+    "condition": "like_new",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=9"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z"
+  },
+  {
+    "bookId": "b_10",
+    "vendorId": "v_3",
+    "title": "MTG NCERT Biology NEET",
+    "author": "MTG",
+    "category": "neet",
+    "mrp": 520,
+    "sellingPrice": 220,
+    "discountPercent": 58,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=10"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9789355558930",
+    "coverUrl": "https://books.google.com/books/content?id=eV_pEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+  },
+  {
+    "bookId": "b_11",
+    "vendorId": "v_4",
+    "title": "Laxmikant Indian Polity",
+    "author": "M. Laxmikant",
+    "category": "upsc",
+    "mrp": 750,
+    "sellingPrice": 320,
+    "discountPercent": 57,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=11"
+    ],
+    "isFeatured": true,
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9789389538472",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_12",
+    "vendorId": "v_1",
+    "title": "Spectrum Modern History",
+    "author": "Rajiv Ahir",
+    "category": "upsc",
+    "mrp": 420,
+    "sellingPrice": 180,
+    "discountPercent": 57,
+    "condition": "like_new",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=12"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788179307212",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_13",
+    "vendorId": "v_2",
+    "title": "JEE Mathematics RD Sharma",
+    "author": "R.D. Sharma",
+    "category": "neet",
+    "mrp": 890,
+    "sellingPrice": 390,
+    "discountPercent": 56,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=13"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9780000000000",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_14",
+    "vendorId": "v_3",
+    "title": "Arihant General Knowledge",
+    "author": "Manohar Pandey",
+    "category": "upsc",
+    "mrp": 375,
+    "sellingPrice": 150,
+    "discountPercent": 60,
+    "condition": "like_new",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=14"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9789325295575",
+    "coverUrl": "https://books.google.com/books/content?id=mtBSEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+  },
+  {
+    "bookId": "b_15",
+    "vendorId": "v_1",
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "category": "novel",
+    "mrp": 299,
+    "sellingPrice": 99,
+    "discountPercent": 67,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=15"
+    ],
+    "isFeatured": true,
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9780061741241",
+    "coverUrl": "https://books.google.com/books/content?id=FEL8DlqjYEkC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+  },
+  {
+    "bookId": "b_16",
+    "vendorId": "v_4",
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "category": "novel",
+    "mrp": 499,
+    "sellingPrice": 199,
+    "discountPercent": 60,
+    "condition": "like_new",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=16"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9781473537804",
+    "coverUrl": "https://books.google.com/books/content?id=fFCjDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+  },
+  {
+    "bookId": "b_17",
+    "vendorId": "v_2",
+    "title": "Wings of Fire",
+    "author": "APJ Abdul Kalam",
+    "category": "novel",
+    "mrp": 195,
+    "sellingPrice": 75,
+    "discountPercent": 62,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=17"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9780000000000",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_18",
+    "vendorId": "v_3",
+    "title": "Engineering Maths BS Grewal",
+    "author": "B.S. Grewal",
+    "category": "college",
+    "mrp": 750,
+    "sellingPrice": 300,
+    "discountPercent": 60,
+    "condition": "good",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=18"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9788174091154",
+    "coverUrl": ""
+  },
+  {
+    "bookId": "b_19",
+    "vendorId": "v_1",
+    "title": "Data Structures - Thareja",
+    "author": "Reema Thareja",
+    "category": "college",
+    "mrp": 450,
+    "sellingPrice": 180,
+    "discountPercent": 60,
+    "condition": "like_new",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=19"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9780198099307",
+    "coverUrl": "https://books.google.com/books/content?id=CYm3oQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+  },
+  {
+    "bookId": "b_20",
+    "vendorId": "v_4",
+    "title": "Principles of Management",
+    "author": "P.C. Tripathi",
+    "category": "college",
+    "mrp": 380,
+    "sellingPrice": 150,
+    "discountPercent": 61,
+    "condition": "fair",
+    "imageIds": [
+      "https://picsum.photos/400/600?random=20"
+    ],
+    "createdAt": "2026-03-11T18:26:16.430Z",
+    "updatedAt": "2026-03-11T18:26:16.430Z",
+    "isbn": "9781283923293",
+    "coverUrl": ""
+  }
+]

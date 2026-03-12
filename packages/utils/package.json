@@ -1,0 +1,16 @@
+{
+  "name": "@rebookindia/utils",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./formatters": "./src/formatters.ts",
+    "./animations": "./src/animations.ts",
+    "./commissionCalculator": "./src/commissionCalculator.ts",
+    "./deliveryCalculator": "./src/deliveryCalculator.ts"
+  },
+  "devDependencies": {
+    "typescript": "latest"
+  }
+}
