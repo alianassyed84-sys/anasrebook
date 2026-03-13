@@ -55,12 +55,12 @@ function BookCard({ book }: { book: Book }) {
 
   return (
     <div 
-      className="block group/card bg-white rounded-3xl border border-gray-100 p-4 hover:shadow-2xl hover:border-brand-secondary/20 transition-all cursor-pointer" 
+      className="block group/card bg-white dark:bg-[#1a2744] rounded-3xl border border-gray-100 dark:border-[#2d3f6b] p-4 hover:shadow-2xl hover:border-brand-secondary/20 transition-all cursor-pointer" 
       onClick={() => router.push(`/book/${book.id}`)}
     >
       <motion.div 
         whileHover={{ y: -10, rotateY: 5 }}
-        className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-6 bg-gradient-to-br from-brand-background to-gray-100 shadow-lg group-hover/card:shadow-2xl transition-all duration-500"
+        className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-6 bg-gradient-to-br from-brand-background dark:from-[#0a0f1e] to-gray-100 dark:to-[#1a2744] shadow-lg group-hover/card:shadow-2xl transition-all duration-500"
       >
         <img
           src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
@@ -105,19 +105,19 @@ function BookCard({ book }: { book: Book }) {
           </div>
           <span className="text-[10px] text-gray-400 font-bold">(4.8)</span>
         </div>
-        <h4 className="font-bold text-brand-primary line-clamp-1 group-hover/card:text-brand-secondary transition-colors underline-offset-4">{book.title}</h4>
-        <p className="text-sm text-gray-500 font-medium">{book.author}</p>
+        <h4 className="font-bold text-brand-primary dark:text-gray-100 line-clamp-1 group-hover/card:text-brand-secondary transition-colors underline-offset-4">{book.title}</h4>
+        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{book.author}</p>
 
         <div className="pt-4 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-xs text-gray-400 line-through font-bold">₹{book.mrp}</span>
-            <span className="text-xl font-black text-brand-primary">₹{book.price}</span>
+            <span className="text-xs text-gray-400 dark:text-gray-500 line-through font-bold">₹{book.mrp}</span>
+            <span className="text-xl font-black text-brand-primary dark:text-brand-secondary">₹{book.price}</span>
           </div>
           <div className={cn(
             "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
-            book.condition.toLowerCase().includes("new") ? "bg-green-100 text-green-700" :
-            book.condition.toLowerCase().includes("good") ? "bg-blue-100 text-blue-700" :
-            "bg-yellow-100 text-yellow-700"
+            book.condition.toLowerCase().includes("new") ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" :
+            book.condition.toLowerCase().includes("good") ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" :
+            "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
           )}>
             {book.condition.replace("_", " ")}
           </div>
@@ -160,7 +160,7 @@ export const ProductScroll = ({ title, subtitle, books, viewAllHref }: ProductSc
   if (books.length === 0) return null;
 
   return (
-    <section className="py-20 bg-white overflow-hidden">
+    <section className="py-20 bg-white dark:bg-[#0a0f1e] overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-2">
@@ -169,7 +169,7 @@ export const ProductScroll = ({ title, subtitle, books, viewAllHref }: ProductSc
           </div>
           <button 
             onClick={() => router.push(viewAllHref)}
-            className="bg-brand-light/40 text-brand-primary px-6 py-3 rounded-full font-bold hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2"
+            className="bg-brand-light/40 dark:bg-brand-secondary/20 text-brand-primary dark:text-brand-secondary px-6 py-3 rounded-full font-bold hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2"
           >
             See More
             <ArrowRight size={18} />

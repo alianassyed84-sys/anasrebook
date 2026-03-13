@@ -2,8 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-brand-background text-brand-primary font-sans;
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+/* ─── LIGHT MODE ─── */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F4F6F9;
+  color: #1a1a1a;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* ─── DARK MODE ─── */
+.dark body {
+  background-color: #0a0f1e;
+  color: #e2e8f0;
+}
+
+/* Cards */
+.dark .bg-white {
+  background-color: #1a2744 !important;
+  border-color: #2d3f6b !important;
+}
+
+/* Navbar */
+.dark nav {
+  background-color: #0f1f3d !important;
+  border-bottom: 1px solid #1e2d50;
+}
+
+/* Input fields */
+.dark input, .dark textarea, .dark select {
+  background-color: #0f1f3d !important;
+  border-color: #2d3f6b !important;
+  color: #e2e8f0 !important;
+}
+
+/* Book cards */
+.dark .book-card {
+  background-color: #1a2744;
+  border-color: #2d3f6b;
+}
+
+/* Footer */
+.dark footer {
+  background-color: #060d1a !important;
+}
+
+/* Text colors */
+.dark .text-gray-500 { color: #94a3b8 !important; }
+.dark .text-gray-600 { color: #7f8ea3 !important; }
+.dark .text-gray-700 { color: #94a3b8 !important; }
+.dark .text-gray-900 { color: #f1f5f9 !important; }
+
+/* Borders */
+.dark .border-gray-100 { border-color: #1e2d50 !important; }
+.dark .border-gray-200 { border-color: #2d3f6b !important; }
+
+/* Background shades */
+.dark .bg-gray-50  { background-color: #111827 !important; }
+.dark .bg-gray-100 { background-color: #1a2744 !important; }
+
+/* Brand Colors overrides for dark mode */
+.dark .text-brand-primary { color: #f1f5f9 !important; }
+.dark .bg-brand-background { background-color: #0a0f1e !important; }
+
+/* Smooth transitions on everything responsive to theme */
+*, *::before, *::after {
+  transition: background-color 0.3s ease,
+              border-color 0.3s ease,
+              color 0.2s ease;
+}
+
+img { max-width: 100%; display: block; }
+button { cursor: pointer; }

@@ -7,7 +7,7 @@ export const Hero = () => {
   const router = useRouter();
 
   return (
-    <section className="bg-gradient-to-br from-[#1B3A6B] via-[#2E75B6] to-[#1B3A6B] text-white pt-24 pb-16">
+    <section className="bg-gradient-to-br from-[#1B3A6B] via-[#2E75B6] to-[#1B3A6B] dark:from-[#0a0f1e] dark:via-[#0f1f3d] dark:to-[#0a0f1e] text-white pt-24 pb-16 transition-colors duration-500">
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
 
         {/* Left side */}
@@ -19,7 +19,7 @@ export const Hero = () => {
             Buy Books at{" "}
             <span className="text-[#E8962E]">40–70% Off</span> MRP
           </h1>
-          <p className="text-blue-100 text-lg mb-6">
+          <p className="text-blue-100 dark:text-gray-300 text-lg mb-6">
             Verified second-hand books from trusted sellers across India.
             Safe payments. Doorstep delivery.
           </p>
@@ -63,7 +63,7 @@ export const Hero = () => {
           ].map((book) => (
             <div
               key={book.isbn}
-              className="bg-white/10 backdrop-blur rounded-xl p-2 border border-white/20 hover:bg-white/20 transition-all cursor-pointer"
+              className="bg-white/10 dark:bg-[#1a2744]/40 backdrop-blur rounded-xl p-2 border border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-[#1a2744]/60 transition-all cursor-pointer"
               onClick={() => router.push("/books")}
             >
               <img

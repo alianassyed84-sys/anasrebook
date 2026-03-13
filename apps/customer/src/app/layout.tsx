@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { DemoBanner } from "@/components/layout/DemoBanner";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,14 +28,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={cn(inter.className, "bg-brand-background text-brand-primary min-h-screen flex flex-col")}>
-        <DemoBanner />
-        <Navbar />
-        <div className="flex-1 mt-20">
-          {children}
-        </div>
-        <Footer />
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(inter.className, "bg-brand-background dark:bg-gray-950 text-brand-primary dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300")}>
+        <ThemeProvider>
+          <DemoBanner />
+          <Navbar />
+          <div className="flex-1 mt-20">
+            {children}
+          </div>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

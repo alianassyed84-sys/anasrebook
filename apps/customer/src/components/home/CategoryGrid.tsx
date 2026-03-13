@@ -17,12 +17,12 @@ export const CategoryGrid = () => {
   const router = useRouter();
 
   return (
-    <section className="py-20 bg-brand-background">
+    <section className="py-20 bg-brand-background dark:bg-gray-950 transition-colors duration-500">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-primary tracking-tight">Browse by Category</h2>
-            <p className="text-gray-500 font-medium">Find exactly what you need for your studies.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-primary dark:text-gray-100 tracking-tight">Browse by Category</h2>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">Find exactly what you need for your studies.</p>
           </div>
           <button 
             onClick={() => router.push("/books")}
@@ -44,13 +44,13 @@ export const CategoryGrid = () => {
             >
               <button 
                 onClick={() => router.push("/books?category=" + cat.slug)}
-                className="w-full group block bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-brand-secondary/20 transition-all text-center"
+                className="w-full group block bg-white dark:bg-[#1a2744] rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-[#2d3f6b] hover:shadow-xl hover:border-brand-secondary/20 transition-all text-center"
               >
                 <div className={`w-16 h-16 ${cat.color} rounded-2xl mx-auto flex items-center justify-center text-white mb-6 transform group-hover:rotate-6 transition-transform`}>
                   <cat.icon size={30} />
                 </div>
-                <h4 className="text-lg font-bold text-brand-primary mb-1">{cat.name}</h4>
-                <p className="text-xs font-bold text-gray-400">{cat.count} listings</p>
+                <h4 className="text-lg font-bold text-brand-primary dark:text-gray-100 mb-1">{cat.name}</h4>
+                <p className="text-xs font-bold text-gray-400 dark:text-gray-500">{cat.count} listings</p>
               </button>
             </motion.div>
           ))}

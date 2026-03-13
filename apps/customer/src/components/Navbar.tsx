@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { authActions } from "@rebookindia/appwrite/src/auth";
 import { userActions } from "@rebookindia/appwrite/src/users";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },
@@ -96,8 +97,8 @@ export const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b",
         scrolled
-          ? "bg-white/90 backdrop-blur-md py-3 shadow-sm border-gray-100"
-          : "bg-white py-5 border-transparent"
+          ? "bg-white/90 dark:bg-[#0f1f3d]/90 backdrop-blur-md py-3 shadow-sm border-gray-100 dark:border-gray-800"
+          : "bg-white dark:bg-[#0f1f3d] py-5 border-transparent"
       )}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -105,7 +106,7 @@ export const Navbar = () => {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center text-white group-hover:rotate-12 transition-transform duration-300">
+            <div className="w-10 h-10 bg-brand-primary dark:bg-brand-secondary rounded-xl flex items-center justify-center text-white group-hover:rotate-12 transition-transform duration-300">
               <BookOpen size={24} />
             </div>
             <div className="flex flex-col">
@@ -121,7 +122,7 @@ export const Navbar = () => {
               placeholder="Search books by title, author..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-brand-background border-none rounded-2xl py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-brand-secondary/20 transition-all outline-none"
+              className="w-full bg-brand-background dark:bg-[#1a2744] border-none rounded-2xl py-2.5 pl-11 pr-4 text-sm dark:text-gray-100 focus:ring-2 focus:ring-brand-secondary/20 transition-all outline-none"
             />
             <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2">
               <Search className="text-gray-400 group-focus-within:text-brand-primary transition-colors" size={18} />
@@ -151,11 +152,13 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* Action Icons */}
           <div className="flex items-center gap-2 md:gap-3">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
             {/* Cart */}
-            <Link href="/cart" className="p-2 hover:bg-brand-background rounded-full transition-colors relative group">
-              <ShoppingCart size={22} className="text-gray-600 group-hover:text-brand-primary transition-colors" />
+            <Link href="/cart" className="p-2 hover:bg-brand-background dark:hover:bg-[#1a2744] rounded-full transition-colors relative group">
+              <ShoppingCart size={22} className="text-gray-600 dark:text-gray-300 group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition-colors" />
               <span className="absolute top-1 right-1 w-4 h-4 bg-brand-accent text-[10px] font-bold text-white rounded-full flex items-center justify-center">0</span>
             </Link>
 
@@ -210,7 +213,7 @@ export const Navbar = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-3 w-64 bg-white rounded-3xl border border-gray-100 shadow-2xl overflow-hidden z-50"
+                       className="absolute right-0 mt-3 w-64 bg-white dark:bg-[#1a2744] rounded-3xl border border-gray-100 dark:border-gray-800 shadow-2xl overflow-hidden z-50"
                     >
                       {/* User Info */}
                       <div className="p-5 border-b border-gray-50 space-y-1">
@@ -310,7 +313,7 @@ export const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-white border-b shadow-xl lg:hidden"
+             className="absolute top-full left-0 w-full bg-white dark:bg-[#0f1f3d] border-b dark:border-gray-800 shadow-xl lg:hidden"
           >
             <div className="container mx-auto px-4 py-6 flex flex-col gap-2">
               {NAV_LINKS.map((link) => (
