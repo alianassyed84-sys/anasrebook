@@ -1,20 +1,22 @@
 /**
- * Run this script ONCE to add ISBN numbers to all books in Appwrite.
+ * Run this script ONCE to add ISBN numbers to all books in Firestore.
  * Usage: npx ts-node apps/customer/scripts/updateIsbn.ts
- * 
- * NOTE: Set your env vars before running:
- *   NEXT_PUBLIC_APPWRITE_ENDPOINT, NEXT_PUBLIC_APPWRITE_PROJECT_ID,
- *   NEXT_PUBLIC_APPWRITE_DATABASE_ID
  */
 
-import { Client, Databases, Query } from "appwrite";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, updateDoc, doc, limit, query, where } from "firebase/firestore";
 
-const client = new Client()
-  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1")
-  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "");
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+};
 
-const databases = new Databases(client);
-const DB_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || "rebookindia-db";
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const ISBN_MAP: Record<string, string> = {
   "NCERT Biology Class 12":         "9788174506191",
@@ -38,15 +40,19 @@ const ISBN_MAP: Record<string, string> = {
 };
 
 async function updateISBNs() {
-  console.log("Fetching books from Appwrite...");
-  const res = await databases.listDocuments(DB_ID, "books", [Query.limit(100)]);
-  console.log(`Found ${res.documents.length} books.`);
+  console.log("Fetching books from Firestore...");
+  const booksRef = collection(db, "books");
+  const q = query(booksRef, limit(100));
+  const querySnapshot = await getDocs(q);
+  
+  console.log(`Found ${querySnapshot.size} books.`);
 
-  for (const book of res.documents) {
+  for (const bookDoc of querySnapshot.docs) {
+    const book = bookDoc.data();
     const isbn = ISBN_MAP[book.title];
     if (isbn && !book.isbn) {
       try {
-        await databases.updateDocument(DB_ID, "books", book.$id, { isbn });
+        await updateDoc(doc(db, "books", bookDoc.id), { isbn });
         console.log(`✅ Updated: "${book.title}" → ${isbn}`);
       } catch (err) {
         console.error(`❌ Failed: "${book.title}"`, err);

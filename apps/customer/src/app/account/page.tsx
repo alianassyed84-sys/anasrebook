@@ -18,7 +18,7 @@ import {
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { account, databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { account, databases, DB_ID, COLLECTIONS, Query } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 export default function AccountPage() {

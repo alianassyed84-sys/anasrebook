@@ -1,11 +1,11 @@
 import { databases, ID } from "./client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "./config";
+import { FIREBASE_PROJECT_ID, COLLECTIONS } from "./config";
 import type { User } from "@rebookindia/types";
 
 export const userActions = {
   createUser: async (userData: Omit<User, "createdAt">) => {
     return await databases.createDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.USERS,
       userData.userId, // Map provided userId or ID.unique()
       {
@@ -16,14 +16,14 @@ export const userActions = {
   },
   getUserById: async (userId: string): Promise<User> => {
     return (await databases.getDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.USERS,
       userId
     )) as unknown as User;
   },
   updateUser: async (userId: string, data: Partial<User>) => {
     return await databases.updateDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.USERS,
       userId,
       data
@@ -31,7 +31,7 @@ export const userActions = {
   },
   activateBookPass: async (userId: string, expiryDate: string) => {
     return await databases.updateDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.USERS,
       userId,
       {
@@ -50,7 +50,7 @@ export const userActions = {
   },
   getAllUsers: async (): Promise<User[]> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.USERS
     );
     return res.documents as unknown as User[];

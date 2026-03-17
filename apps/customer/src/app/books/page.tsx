@@ -8,7 +8,7 @@ import {
   X, Star, ArrowUpDown, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 const CATEGORIES = ["school", "college", "neet", "upsc", "novel", "other"];
@@ -140,14 +140,13 @@ function SearchContent() {
   const fetchBooks = useCallback(async () => {
     setLoading(true);
     try {
-      const queries = [
+      const queries: any[] = [
         Query.equal("isAvailable", true),
         Query.limit(50)
       ];
 
       if (searchQuery) {
-        // Appwrite's Query.search works best if indexes are set up. Fallback to client filter if needed, 
-        // but user asked for Query.search
+        // Firebase query works best with indexes.
         queries.push(Query.search("title", searchQuery));
       }
 

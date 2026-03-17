@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { notFound, useRouter, useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { ShoppingCart, Heart, MessageCircle, Star, MapPin, Package, Check, ChevronRight, ChevronDown } from 'lucide-react';
-import { databases, DB_ID, COLLECTIONS, account } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, account, getStorageUrl, BUCKETS } from "@rebookindia/firebase";
 
 const BookCoverImage = ({ isbn, title, coverUrl, className }: any) => {
     const getImageUrl = (fileId: string) => {
-        return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/book-images/files/${fileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
+        return getStorageUrl(BUCKETS.BOOK_IMAGES, fileId);
     };
     const placeholderUrl = `https://images.unsplash.com/photo-1491843384429-30494622eb9d?auto=format&fit=crop&w=800&h=1000&q=80`;
     const imageUrl = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg` : (coverUrl ? getImageUrl(coverUrl) : placeholderUrl);

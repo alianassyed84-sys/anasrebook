@@ -9,8 +9,8 @@ import {
   LogOut, ShieldCheck, Store, ChevronDown, Package
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { authActions } from "@rebookindia/appwrite/src/auth";
-import { userActions } from "@rebookindia/appwrite/src/users";
+import { authActions } from "@rebookindia/firebase/src/auth";
+import { userActions } from "@rebookindia/firebase/src/users";
 import ThemeToggle from "./ThemeToggle";
 
 const NAV_LINKS = [

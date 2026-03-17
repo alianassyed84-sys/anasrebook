@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { account, loginWithGoogle } from "@/lib/appwrite";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, BookOpen } from "lucide-react";
+import { loginWithEmail, loginWithGoogle, getDocument, setDocument, COLLECTIONS, getCurrentUser } from "@rebookindia/firebase";
 
 export default function CustomerLogin() {
   const router = useRouter();
@@ -15,8 +15,31 @@ export default function CustomerLogin() {
   const [gLoading, setGLoading] = useState(false);
 
   useEffect(() => {
-    account.get().then(() => router.replace("/")).catch(() => {});
-  }, []);
+    getCurrentUser().then((user) => {
+      if (user) router.replace("/");
+    }).catch(() => {});
+  }, [router]);
+
+  async function syncUserToFirestore(user: any, additionalData: any = {}) {
+    try {
+      const userDoc = await getDocument(COLLECTIONS.USERS, user.uid);
+      if (!userDoc) {
+        await setDocument(COLLECTIONS.USERS, user.uid, {
+          uid: user.uid,
+          name: user.displayName || additionalData.name || "Customer",
+          email: user.email,
+          phone: user.phoneNumber || additionalData.phone || "",
+          city: "",
+          pincode: "",
+          isBookPass: false,
+          totalOrders: 0,
+          role: "customer"
+        });
+      }
+    } catch (error) {
+      console.error("Error syncing user:", error);
+    }
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -26,16 +49,12 @@ export default function CustomerLogin() {
     }
     setLoading(true);
     try {
-      try { await account.deleteSession("current"); } catch {}
-      await account.createEmailPasswordSession(email.trim(), password);
+      const user = await loginWithEmail(email.trim(), password);
+      await syncUserToFirestore(user);
       toast.success("Welcome back! 📚");
       router.push("/");
     } catch (err: any) {
-      if (err?.code === 401) {
-        toast.error("Wrong email or password.");
-      } else {
-        toast.error("Login failed: " + (err?.message || "Try again"));
-      }
+      toast.error("Login failed: " + (err.message || "Try again"));
       setLoading(false);
     }
   }
@@ -43,24 +62,22 @@ export default function CustomerLogin() {
   async function handleGoogleLogin() {
     setGLoading(true);
     try {
-      loginWithGoogle(
-        `${window.location.origin}/oauth`,
-        `${window.location.origin}/login?error=oauth_failed`
-      );
-    } catch {
+      const user = await loginWithGoogle();
+      await syncUserToFirestore(user);
+      toast.success("Welcome back! 📚");
+      router.push("/");
+    } catch (err: any) {
       toast.error("Google login failed. Try again.");
       setGLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-[#F4F6F9] flex items-center
-      justify-center p-4">
+    <div className="min-h-screen bg-[#F4F6F9] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
 
         <div className="text-center mb-7">
-          <Link href="/"
-            className="inline-flex items-center gap-2">
+          <Link href="/" className="inline-flex items-center gap-2">
             <BookOpen size={28} className="text-[#E8962E]" />
             <span className="text-[#1B3A6B] text-2xl font-bold">
               RebookIndia
@@ -71,8 +88,7 @@ export default function CustomerLogin() {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8
-          border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
 
           {/* Google Button */}
           <button
@@ -86,10 +102,8 @@ export default function CustomerLogin() {
               shadow-sm mb-5">
             {gLoading ? (
               <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10"
-                  stroke="currentColor" strokeWidth="4" fill="none"/>
-                <path className="opacity-75" fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
               </svg>
             ) : (
               <svg viewBox="0 0 24 24" className="w-5 h-5">
@@ -99,7 +113,7 @@ export default function CustomerLogin() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
             )}
-            {gLoading ? "Redirecting to Google..." : "Continue with Google"}
+            {gLoading ? "Login..." : "Continue with Google"}
           </button>
 
           <div className="flex items-center gap-3 mb-5">
@@ -110,20 +124,16 @@ export default function CustomerLogin() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="text-gray-700 text-sm font-medium
-                block mb-1">Email</label>
+              <label className="text-gray-700 text-sm font-medium block mb-1">Email</label>
               <input type="email" value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="your@email.com"
                 autoComplete="email"
                 disabled={loading || gLoading}
-                className="w-full border border-gray-200 rounded-xl
-                  px-4 py-3 text-sm outline-none
-                  focus:border-[#1B3A6B] transition-colors"/>
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#1B3A6B] transition-colors"/>
             </div>
             <div>
-              <label className="text-gray-700 text-sm font-medium
-                block mb-1">Password</label>
+              <label className="text-gray-700 text-sm font-medium block mb-1">Password</label>
               <div className="relative">
                 <input type={show ? "text" : "password"}
                   value={password}
@@ -131,9 +141,7 @@ export default function CustomerLogin() {
                   placeholder="Enter password"
                   autoComplete="current-password"
                   disabled={loading || gLoading}
-                  className="w-full border border-gray-200 rounded-xl
-                    px-4 py-3 pr-11 text-sm outline-none
-                    focus:border-[#1B3A6B] transition-colors"/>
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 pr-11 text-sm outline-none focus:border-[#1B3A6B] transition-colors"/>
                 <button type="button" onClick={() => setShow(s => !s)}
                   className="absolute right-3 top-3.5 text-gray-400">
                   {show ? <EyeOff size={18}/> : <Eye size={18}/>}
@@ -141,16 +149,11 @@ export default function CustomerLogin() {
               </div>
             </div>
             <button type="submit" disabled={loading || gLoading}
-              className="w-full bg-[#1B3A6B] hover:bg-[#2E75B6]
-                disabled:opacity-60 text-white font-semibold py-3
-                rounded-xl transition-colors flex items-center
-                justify-center gap-2">
+              className="w-full bg-[#1B3A6B] hover:bg-[#2E75B6] disabled:opacity-60 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
               {loading && (
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10"
-                    stroke="currentColor" strokeWidth="4" fill="none"/>
-                  <path className="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                 </svg>
               )}
               {loading ? "Signing in..." : "Login with Email"}
@@ -159,8 +162,7 @@ export default function CustomerLogin() {
 
           <p className="text-center text-sm text-gray-500 mt-4">
             No account?{" "}
-            <Link href="/register"
-              className="text-[#E8962E] font-medium hover:underline">
+            <Link href="/register" className="text-[#E8962E] font-medium hover:underline">
               Register here
             </Link>
           </p>

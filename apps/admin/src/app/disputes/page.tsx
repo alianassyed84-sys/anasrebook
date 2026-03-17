@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { AlertCircle, CheckCircle2, MessageSquare, XCircle, Info, ExternalLink, ShieldAlert } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { disputeActions } from "@rebookindia/appwrite/src/disputes";
+import { disputeActions } from "@rebookindia/firebase/src/disputes";
 import type { Dispute, DisputeStatus } from "@rebookindia/types";
 import toast from "react-hot-toast";
 import { format } from "date-fns";

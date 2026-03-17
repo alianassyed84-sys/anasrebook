@@ -1,4 +1,5 @@
-export const APPWRITE_DB_ID = "rebookindia-db";
+export const FIREBASE_PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "rebookmj-d52b4";
+export const DB_ID = FIREBASE_PROJECT_ID;
 
 export const COLLECTIONS = {
     USERS: "users",
@@ -11,7 +12,7 @@ export const COLLECTIONS = {
     BOOKPASS_SUBSCRIPTIONS: "bookpass_subscriptions",
     DELIVERY_ZONES: "delivery_zones",
     SETTINGS: "settings",
-    ADMIN_AUDIT_LOG: "admin_audit_log"
+    PROMOTIONS: "promotions"
 } as const;
 
 export const BUCKETS = {

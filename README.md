@@ -11,7 +11,7 @@ rebookindiav2/
 │   ├── vendor/       → vendor.rebookindia.in    (port 4001)
 │   └── admin/        → admin.rebookindia.in     (port 4002)
 ├── packages/
-│   ├── appwrite/     → @rebookindia/appwrite    (SDK wrapper + seed scripts)
+│   ├── firebase/     → @rebookindia/firebase    (SDK wrapper + seed scripts)
 │   ├── types/        → @rebookindia/types       (shared TypeScript types)
 │   ├── ui/           → @rebookindia/ui          (shared components)
 │   └── utils/        → @rebookindia/utils       (formatters, calculators)
@@ -36,7 +36,7 @@ npm run dev:admin        # localhost:4002
 ## Seeding Demo Data
 
 ```bash
-# Inject all demo data into Appwrite
+# Inject all demo data into Firebase
 npm run seed
 ```
 
@@ -51,15 +51,15 @@ npm run build:admin      # Admin only
 
 ## Environment Variables
 
-Each app needs its own `.env.local`. See `packages/appwrite/.env.example` for reference.
+Each app needs its own `.env.local`. See `packages/firebase/.env.example` for reference.
 
 | App | Key Variables |
 |---|---|
-| `apps/customer` | `NEXT_PUBLIC_APPWRITE_PROJECT_ID`, `NEXT_PUBLIC_APPWRITE_ENDPOINT` |
-| `apps/vendor` | `NEXT_PUBLIC_APPWRITE_PROJECT_ID`, `NEXT_PUBLIC_APPWRITE_ENDPOINT` |
-| `apps/admin` | `NEXT_PUBLIC_APPWRITE_PROJECT_ID`, `NEXT_PUBLIC_APPWRITE_ENDPOINT`, `APPWRITE_API_KEY` |
+| `apps/customer` | `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_API_KEY` |
+| `apps/vendor` | `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_API_KEY` |
+| `apps/admin` | `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_API_KEY` |
 
-## Demo Credentials (Appwrite Auth)
+## Demo Credentials (Firebase Auth)
 
 | Role | Email | Password |
 |---|---|---|
@@ -73,6 +73,8 @@ Each app needs its own `.env.local`. See `packages/appwrite/.env.example` for re
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
-- **Database**: Appwrite
+- **Database**: Firebase (Firestore)
+- **Auth**: Firebase Auth
+- **Storage**: Firebase Storage
 - **Monorepo**: Turborepo + npm workspaces
 - **Deployment**: Vercel (3 separate projects)

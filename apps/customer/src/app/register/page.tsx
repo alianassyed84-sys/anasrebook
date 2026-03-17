@@ -6,8 +6,7 @@ import {
   Mail, Lock, Eye, EyeOff, ArrowRight, User, Phone, MapPin
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { account, databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
-import { ID } from "appwrite";
+import { account, databases, DB_ID, COLLECTIONS, ID } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
 
 export default function RegisterPage() {

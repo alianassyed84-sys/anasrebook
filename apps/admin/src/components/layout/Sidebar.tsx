@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { account } from "@rebookindia/appwrite/src/client";
+import { account } from "@rebookindia/firebase/src/client";
 import { toast } from "react-hot-toast";
 import {
   LayoutDashboard,

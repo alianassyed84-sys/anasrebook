@@ -1,11 +1,11 @@
 import { databases, Query } from "./client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "./config";
+import { FIREBASE_PROJECT_ID, COLLECTIONS } from "./config";
 import type { Dispute, DisputeStatus } from "@rebookindia/types";
 
 export const disputeActions = {
   createDispute: async (disputeData: Omit<Dispute, "createdAt">) => {
     return await databases.createDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.DISPUTES,
       disputeData.disputeId,
       {
@@ -17,7 +17,7 @@ export const disputeActions = {
   },
   getDisputeById: async (disputeId: string): Promise<Dispute> => {
     return (await databases.getDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.DISPUTES,
       disputeId
     )) as unknown as Dispute;
@@ -25,7 +25,7 @@ export const disputeActions = {
   getAllDisputes: async (status?: DisputeStatus): Promise<Dispute[]> => {
     const queries = status ? [Query.equal("status", status)] : [];
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.DISPUTES,
       queries
     );
@@ -33,7 +33,7 @@ export const disputeActions = {
   },
   updateDisputeStatus: async (disputeId: string, status: DisputeStatus, notes?: string) => {
     return await databases.updateDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.DISPUTES,
       disputeId,
       {

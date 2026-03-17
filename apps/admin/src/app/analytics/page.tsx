@@ -3,9 +3,9 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, IndianRupee, Users, BookOpen, ArrowUpRight, Target, TreePine, BarChart3, PieChart as PieChartIcon, Search, Download, Calendar } from "lucide-react";
-import { orderActions } from "@rebookindia/appwrite/src/orders";
-import { userActions } from "@rebookindia/appwrite/src/users";
-import { bookActions } from "@rebookindia/appwrite/src/books";
+import { orderActions } from "@rebookindia/firebase/src/orders";
+import { userActions } from "@rebookindia/firebase/src/users";
+import { bookActions } from "@rebookindia/firebase/src/books";
 import type { Order, User, Book } from "@rebookindia/types";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell, PieChart, Pie } from "recharts";
 import { format, subMonths, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";

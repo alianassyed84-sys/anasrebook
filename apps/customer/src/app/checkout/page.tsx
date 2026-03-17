@@ -14,8 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, account } from "@/lib/appwrite";
-import { ID } from "appwrite";
+import { databases, DB_ID, COLLECTIONS, account, ID } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
 
 const PAYMENT_METHODS = [

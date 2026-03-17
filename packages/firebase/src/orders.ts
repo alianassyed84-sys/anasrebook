@@ -1,11 +1,11 @@
 import { databases, Query } from "./client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "./config";
+import { FIREBASE_PROJECT_ID, COLLECTIONS } from "./config";
 import type { Order, OrderStatus } from "@rebookindia/types";
 
 export const orderActions = {
   createOrder: async (orderData: Omit<Order, "createdAt" | "updatedAt">) => {
     return await databases.createDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.ORDERS,
       orderData.orderId,
       {
@@ -17,14 +17,14 @@ export const orderActions = {
   },
   getOrderById: async (orderId: string): Promise<Order> => {
     return (await databases.getDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.ORDERS,
       orderId
     )) as unknown as Order;
   },
   getOrdersByUser: async (userId: string): Promise<Order[]> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.ORDERS,
       [Query.equal("userId", userId), Query.orderDesc("createdAt")]
     );
@@ -32,7 +32,7 @@ export const orderActions = {
   },
   getOrdersByVendor: async (vendorId: string): Promise<Order[]> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.ORDERS,
       [Query.equal("vendorId", vendorId), Query.orderDesc("createdAt")]
     );
@@ -40,7 +40,7 @@ export const orderActions = {
   },
   getAllOrders: async (filters: string[] = []): Promise<Order[]> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.ORDERS,
       filters
     );
@@ -52,7 +52,7 @@ export const orderActions = {
         updatePayload.deliveredAt = new Date().toISOString();
     }
     return await databases.updateDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.ORDERS,
       orderId,
       updatePayload
@@ -60,7 +60,7 @@ export const orderActions = {
   },
   releaseVendorPayout: async (orderId: string) => {
     return await databases.updateDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.ORDERS,
       orderId,
       {
@@ -71,7 +71,7 @@ export const orderActions = {
     );
   },
   getOrderStats: async () => {
-    // Note: robust stats usually requires an Appwrite function or separate aggregation collection.
+    // Note: robust stats usually requires a Cloud Function or separate aggregation collection.
     // For now, returning basic dummy wrapper.
     return {
        totalOrders: 0,

@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, getStorageUrl, BUCKETS } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
 
 export default function CartPage() {
@@ -107,7 +107,7 @@ export default function CartPage() {
   }
 
   const getImageUrl = (fileId: string) => {
-    return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/book-images/files/${fileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
+    return getStorageUrl(BUCKETS.BOOK_IMAGES, fileId);
   };
 
   return (

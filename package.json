@@ -19,7 +19,7 @@
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\" --ignore-path .gitignore",
-    "seed": "npm run seed --workspace=packages/appwrite"
+    "seed": "npm run seed --workspace=packages/firebase"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
@@ -35,5 +35,9 @@
     "glob": "^11.0.0",
     "rimraf": "^6.0.0",
     "inflight": "0.0.1"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "firebase-admin": "^13.7.0"
   }
 }

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { IndianRupee, TrendingUp, ArrowUpRight, Download, CheckCircle2, Clock, Wallet, BarChart3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { orderActions } from "@rebookindia/appwrite/src/orders";
+import { orderActions } from "@rebookindia/firebase/src/orders";
 import type { Order } from "@rebookindia/types";
 import toast from "react-hot-toast";
 import { format } from "date-fns";

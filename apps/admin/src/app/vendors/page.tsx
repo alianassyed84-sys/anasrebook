@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { CheckCircle2, Eye, Search, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 const planColor: Record<string, string> = {

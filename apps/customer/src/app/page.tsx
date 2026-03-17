@@ -12,19 +12,13 @@ import { Testimonials } from "@/components/home/Testimonials";
 import { ImpactCounter } from "@/components/home/ImpactCounter";
 import { AppDownload } from "@/components/home/AppDownload";
 import { Newsletter } from "@/components/home/Newsletter";
-import { bookActions } from "@rebookindia/appwrite/src/books";
-import { BUCKETS } from "@rebookindia/appwrite/src/config";
+import { bookActions, getStorageUrl } from "@rebookindia/firebase";
+import { BUCKETS } from "@rebookindia/firebase/src/config";
 import type { Book } from "@rebookindia/types";
 
 function getBookImageUrl(imageIds: string[]): string {
   if (!imageIds || imageIds.length === 0) return "";
-  try {
-    const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "https://sgp.cloud.appwrite.io/v1";
-    const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
-    return `${endpoint}/storage/buckets/${BUCKETS.BOOK_IMAGES}/files/${imageIds[0]}/view?project=${projectId}`;
-  } catch {
-    return "";
-  }
+  return getStorageUrl(BUCKETS.BOOK_IMAGES, imageIds[0]);
 }
 
 function toProductScrollFormat(books: Book[]) {

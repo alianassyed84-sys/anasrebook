@@ -9,10 +9,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { authActions } from "@rebookindia/appwrite/src/auth";
-import { userActions } from "@rebookindia/appwrite/src/users";
-import { databases, ID } from "@rebookindia/appwrite/src/client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "@rebookindia/appwrite/src/config";
+import { authActions, userActions, databases, ID, DB_ID, COLLECTIONS } from "@rebookindia/firebase";
 import toast, { Toaster } from "react-hot-toast";
 
 const STEPS = ["Store Details", "KYC Documents", "Bank Account", "Review & Submit"];
@@ -52,7 +49,7 @@ export default function VendorRegisterPage() {
     }
     setLoading(true);
     try {
-       // 1. Create Appwrite Account (User)
+       // 1. Create Firebase Account (User)
        const user = await authActions.signUpWithEmail(email, password, ownerName, phone);
        // 2. Create User Profile with role 'vendor'
        await userActions.createUser({
@@ -65,7 +62,7 @@ export default function VendorRegisterPage() {
          pincode
        });
        // 3. Create Vendor Document
-       await databases.createDocument(APPWRITE_DB_ID, COLLECTIONS.VENDORS, ID.unique(), {
+       await databases.createDocument(DB_ID, COLLECTIONS.VENDORS, ID.unique(), {
          userId: user.$id,
          vendorId: ID.unique(),
          shopName,

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Save, Percent, Globe, Loader2, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 export default function SettingsPage() {

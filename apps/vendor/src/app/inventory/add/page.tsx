@@ -6,8 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { BookCover } from "@rebookindia/ui";
-import { databases, storage, DB_ID, COLLECTIONS, account, Query } from "@/lib/appwrite";
-import { ID } from "appwrite";
+import { databases, storageCompat as storage, DB_ID, COLLECTIONS, account, Query, ID } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
 
 const CONDITIONS = [

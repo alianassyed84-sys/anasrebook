@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { Search, Trash2, CheckCircle2, Eye, Tag, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, getStorageUrl, BUCKETS } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
 
 function BooksContent() {
@@ -108,7 +108,7 @@ function BooksContent() {
               <tr key={book.$id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 flex items-center gap-4">
                   <div className="w-10 h-14 bg-gray-100 rounded border shrink-0 overflow-hidden">
-                    {book.imageIds?.[0] && <img src={`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/book-images/files/${book.imageIds[0]}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`} className="w-full h-full object-cover" alt="" />}
+                    {book.imageIds?.[0] && <img src={getStorageUrl(BUCKETS.BOOK_IMAGES, book.imageIds[0])} className="w-full h-full object-cover" alt="" />}
                   </div>
                   <div className="min-w-0">
                     <p className="font-bold text-gray-900 truncate">{book.title}</p>

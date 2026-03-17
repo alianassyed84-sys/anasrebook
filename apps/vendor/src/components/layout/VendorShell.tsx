@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { useRouter, usePathname } from "next/navigation";
-import { authActions } from "@rebookindia/appwrite/src/auth";
-import { userActions } from "@rebookindia/appwrite/src/users";
+import { authActions } from "@rebookindia/firebase/src/auth";
+import { userActions } from "@rebookindia/firebase/src/users";
 import { Toaster } from "react-hot-toast";
 
 export function VendorShell({ children }: { children: React.ReactNode }) {

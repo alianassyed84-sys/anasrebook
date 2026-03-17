@@ -1,11 +1,11 @@
 import { databases, ID, Query } from "./client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "./config";
+import { FIREBASE_PROJECT_ID, COLLECTIONS } from "./config";
 import type { Vendor } from "@rebookindia/types";
 
 export const vendorActions = {
   createVendor: async (vendorData: Omit<Vendor, "createdAt">) => {
     return await databases.createDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.VENDORS,
       vendorData.vendorId,
       {
@@ -16,14 +16,14 @@ export const vendorActions = {
   },
   getVendorById: async (vendorId: string): Promise<Vendor> => {
     return (await databases.getDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.VENDORS,
       vendorId
     )) as unknown as Vendor;
   },
   getVendorByUserId: async (userId: string): Promise<Vendor | null> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.VENDORS,
       [Query.equal("userId", userId), Query.limit(1)]
     );
@@ -31,7 +31,7 @@ export const vendorActions = {
   },
   updateVendor: async (vendorId: string, data: Partial<Vendor>) => {
     return await databases.updateDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.VENDORS,
       vendorId,
       data
@@ -39,7 +39,7 @@ export const vendorActions = {
   },
   getAllVendors: async (filters: string[] = []): Promise<Vendor[]> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.VENDORS,
       filters
     );

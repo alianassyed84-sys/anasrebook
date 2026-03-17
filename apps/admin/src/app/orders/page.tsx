@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Search, Filter, Printer, ChevronRight, Eye, MoreVertical, Package, Truck, CheckCircle, XCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { orderActions } from "@rebookindia/appwrite/src/orders";
+import { orderActions } from "@rebookindia/firebase/src/orders";
 import type { Order, OrderStatus } from "@rebookindia/types";
 import toast from "react-hot-toast";
 import { format } from "date-fns";

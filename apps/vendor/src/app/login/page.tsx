@@ -2,10 +2,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { account, databases, DB_ID, COLLECTIONS,
-         Query, loginWithGoogle } from "@/lib/appwrite";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Store } from "lucide-react";
+import { loginWithEmail, loginWithGoogle, getUserVendorData, logout, COLLECTIONS, getDocumentsByField, getCurrentUser } from "@rebookindia/firebase";
 
 export default function VendorLogin() {
   const router   = useRouter();
@@ -16,51 +15,50 @@ export default function VendorLogin() {
   const [gLoading, setGLoading] = useState(false);
 
   useEffect(() => {
-    account.get().then(async user => {
-      const res = await databases.listDocuments(
-        DB_ID, COLLECTIONS.VENDORS,
-        [Query.equal("userId", user.$id)]
-      );
-      if (res.documents.length > 0) router.replace("/dashboard");
+    getCurrentUser().then(async user => {
+      if (user) {
+        const vendors = await getDocumentsByField(COLLECTIONS.VENDORS, "userId", "==", user.uid);
+        if (vendors.length > 0) router.replace("/dashboard");
+      }
     }).catch(() => {});
-  }, []);
+  }, [router]);
+
+  async function handleLoginSuccess(user: any) {
+    const vendors = await getDocumentsByField(COLLECTIONS.VENDORS, "userId", "==", user.uid);
+    if (vendors.length === 0) {
+      await logout();
+      toast.error("No vendor account found. Please register first.");
+      setLoading(false);
+      setGLoading(false);
+      return;
+    }
+    const vendor: any = vendors[0];
+    if (vendor.status === "pending") {
+      router.push("/pending-approval"); return;
+    }
+    if (vendor.status === "suspended") {
+      await logout();
+      toast.error("Account suspended. Contact support.");
+      setLoading(false);
+      setGLoading(false);
+      return;
+    }
+    toast.success(`Welcome, ${vendor.shopName || "Vendor"}! 🏪`);
+    router.push("/dashboard");
+  }
 
   async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();   // ← CRITICAL: stops page refresh
+    e.preventDefault();
     if (!email.trim() || !password.trim()) {
       toast.error("Enter email and password");
       return;
     }
     setLoading(true);
     try {
-      try { await account.deleteSession("current"); } catch {}
-      await account.createEmailPasswordSession(email.trim(), password);
-      const user = await account.get();
-      const res = await databases.listDocuments(
-        DB_ID, COLLECTIONS.VENDORS,
-        [Query.equal("userId", user.$id)]
-      );
-      if (res.documents.length === 0) {
-        await account.deleteSession("current");
-        toast.error("No vendor account found. Please register first.");
-        setLoading(false);
-        return;
-      }
-      const vendor = res.documents[0];
-      if (vendor.status === "pending") {
-        router.push("/pending-approval"); return;
-      }
-      if (vendor.status === "suspended") {
-        await account.deleteSession("current");
-        toast.error("Account suspended. Contact support.");
-        setLoading(false);
-        return;
-      }
-      toast.success(`Welcome, ${vendor.shopName}! 🏪`);
-      router.push("/dashboard");
+      const user = await loginWithEmail(email.trim(), password);
+      await handleLoginSuccess(user);
     } catch (err: any) {
-      if (err?.code === 401) toast.error("Wrong email or password.");
-      else toast.error("Login failed. Check your connection.");
+      toast.error("Login failed: " + (err.message || "Try again"));
       setLoading(false);
     }
   }
@@ -68,19 +66,16 @@ export default function VendorLogin() {
   async function handleGoogleLogin() {
     setGLoading(true);
     try {
-      loginWithGoogle(
-        `${window.location.origin}/oauth`,
-        `${window.location.origin}/login?error=oauth_failed`
-      );
-    } catch {
+      const user = await loginWithGoogle();
+      await handleLoginSuccess(user);
+    } catch (err: any) {
       toast.error("Google login failed. Try again.");
       setGLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-[#F4F6F9] flex items-center
-      justify-center p-4">
+    <div className="min-h-screen bg-[#F4F6F9] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
 
         <div className="text-center mb-7">
@@ -93,8 +88,7 @@ export default function VendorLogin() {
           <p className="text-gray-400 text-xs mt-1">RebookIndia</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8
-          border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
 
           {/* Google Button */}
           <button type="button" onClick={handleGoogleLogin}
@@ -106,10 +100,8 @@ export default function VendorLogin() {
               shadow-sm mb-5">
             {gLoading ? (
               <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10"
-                  stroke="currentColor" strokeWidth="4" fill="none"/>
-                <path className="opacity-75" fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
               </svg>
             ) : (
               <svg viewBox="0 0 24 24" className="w-5 h-5">
@@ -119,7 +111,7 @@ export default function VendorLogin() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
             )}
-            {gLoading ? "Redirecting to Google..." : "Continue with Google"}
+            {gLoading ? "Login..." : "Continue with Google"}
           </button>
 
           <div className="flex items-center gap-3 mb-5">
@@ -130,20 +122,16 @@ export default function VendorLogin() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="text-gray-700 text-sm font-medium
-                block mb-1">Registered Email</label>
+              <label className="text-gray-700 text-sm font-medium block mb-1">Registered Email</label>
               <input type="email" value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="shop@email.com"
                 autoComplete="email"
                 disabled={loading || gLoading}
-                className="w-full border border-gray-200 rounded-xl
-                  px-4 py-3 text-sm outline-none
-                  focus:border-[#1B3A6B] transition-colors"/>
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#1B3A6B] transition-colors"/>
             </div>
             <div>
-              <label className="text-gray-700 text-sm font-medium
-                block mb-1">Password</label>
+              <label className="text-gray-700 text-sm font-medium block mb-1">Password</label>
               <div className="relative">
                 <input type={show ? "text" : "password"}
                   value={password}
@@ -151,9 +139,7 @@ export default function VendorLogin() {
                   placeholder="Enter password"
                   autoComplete="current-password"
                   disabled={loading || gLoading}
-                  className="w-full border border-gray-200 rounded-xl
-                    px-4 py-3 pr-11 text-sm outline-none
-                    focus:border-[#1B3A6B] transition-colors"/>
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 pr-11 text-sm outline-none focus:border-[#1B3A6B] transition-colors"/>
                 <button type="button" onClick={() => setShow(s => !s)}
                   className="absolute right-3 top-3.5 text-gray-400">
                   {show ? <EyeOff size={18}/> : <Eye size={18}/>}
@@ -161,16 +147,11 @@ export default function VendorLogin() {
               </div>
             </div>
             <button type="submit" disabled={loading || gLoading}
-              className="w-full bg-[#1B3A6B] hover:bg-[#2E75B6]
-                disabled:opacity-60 text-white font-semibold py-3
-                rounded-xl transition-colors flex items-center
-                justify-center gap-2">
+              className="w-full bg-[#1B3A6B] hover:bg-[#2E75B6] disabled:opacity-60 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
               {loading && (
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10"
-                    stroke="currentColor" strokeWidth="4" fill="none"/>
-                  <path className="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                 </svg>
               )}
               {loading ? "Signing in..." : "Login with Email"}
@@ -179,8 +160,7 @@ export default function VendorLogin() {
 
           <p className="text-center text-sm text-gray-500 mt-4">
             New vendor?{" "}
-            <Link href="/register"
-              className="text-[#E8962E] font-medium hover:underline">
+            <Link href="/register" className="text-[#E8962E] font-medium hover:underline">
               Register your shop
             </Link>
           </p>

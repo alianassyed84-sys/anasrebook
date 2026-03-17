@@ -1,11 +1,11 @@
 import { databases, Query } from "./client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "./config";
+import { FIREBASE_PROJECT_ID, COLLECTIONS } from "./config";
 import type { Review } from "@rebookindia/types";
 
 export const reviewActions = {
   createReview: async (reviewData: Omit<Review, "createdAt">) => {
     return await databases.createDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.REVIEWS,
       reviewData.reviewId,
       {
@@ -16,7 +16,7 @@ export const reviewActions = {
   },
   getReviewsByVendor: async (vendorId: string): Promise<Review[]> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.REVIEWS,
       [Query.equal("vendorId", vendorId), Query.orderDesc("createdAt")]
     );
@@ -24,7 +24,7 @@ export const reviewActions = {
   },
   getReviewByOrder: async (orderId: string): Promise<Review | null> => {
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.REVIEWS,
       [Query.equal("orderId", orderId), Query.limit(1)]
     );

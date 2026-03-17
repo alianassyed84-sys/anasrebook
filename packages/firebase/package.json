@@ -1,5 +1,5 @@
 {
-  "name": "@rebookindia/appwrite",
+  "name": "@rebookindia/firebase",
   "version": "0.1.0",
   "private": true,
   "main": "src/index.ts",
@@ -7,13 +7,13 @@
     "seed": "ts-node scripts/seed.ts",
     "fix-passwords": "ts-node scripts/fixPasswords.ts"
   },
-  "dependencies": {
-    "appwrite": "^23.0.0",
-    "node-appwrite": "latest"
-  },
   "devDependencies": {
     "dotenv": "latest",
     "ts-node": "latest",
     "typescript": "latest"
+  },
+  "dependencies": {
+    "firebase": "^12.10.0",
+    "firebase-admin": "^13.7.0"
   }
 }

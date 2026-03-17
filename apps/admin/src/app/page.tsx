@@ -35,7 +35,7 @@ import {
   Area
 } from "recharts";
 import { format, subDays, startOfDay, isAfter, subMonths, subYears } from "date-fns";
-import { databases, Query, APPWRITE_DB_ID, COLLECTIONS } from "@rebookindia/appwrite";
+import { databases, Query, DB_ID, COLLECTIONS } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
 
 function AnimatedNumber({ value }: { value: number }) {
@@ -106,14 +106,14 @@ function OverviewContent() {
         topVendorsRes, 
         recentRes
       ] = await Promise.all([
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.ORDERS, [Query.greaterThanEqual("createdAt", todayStart), Query.limit(100)]),
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.VENDORS, [Query.equal("status", "approved"), Query.limit(0)]),
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.VENDORS, [Query.equal("status", "pending"), Query.orderDesc("createdAt"), Query.limit(3)]),
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.BOOKS, [Query.equal("isAvailable", true), Query.limit(0)]),
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.DISPUTES, [Query.equal("status", "open"), Query.limit(0)]),
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.ORDERS, [Query.equal("isPayoutReleased", false), Query.equal("orderStatus", "delivered"), Query.limit(100)]),
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.VENDORS, [Query.equal("status", "approved"), Query.orderDesc("totalEarnings"), Query.limit(4)]),
-        databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.ORDERS, [Query.orderDesc("createdAt"), Query.limit(4)])
+        databases.listDocuments(DB_ID, COLLECTIONS.ORDERS, [Query.greaterThanEqual("createdAt", todayStart), Query.limit(100)]),
+        databases.listDocuments(DB_ID, COLLECTIONS.VENDORS, [Query.equal("status", "approved"), Query.limit(0)]),
+        databases.listDocuments(DB_ID, COLLECTIONS.VENDORS, [Query.equal("status", "pending"), Query.orderDesc("createdAt"), Query.limit(3)]),
+        databases.listDocuments(DB_ID, COLLECTIONS.BOOKS, [Query.equal("isAvailable", true), Query.limit(0)]),
+        databases.listDocuments(DB_ID, COLLECTIONS.DISPUTES, [Query.equal("status", "open"), Query.limit(0)]),
+        databases.listDocuments(DB_ID, COLLECTIONS.ORDERS, [Query.equal("isPayoutReleased", false), Query.equal("orderStatus", "delivered"), Query.limit(100)]),
+        databases.listDocuments(DB_ID, COLLECTIONS.VENDORS, [Query.equal("status", "approved"), Query.orderDesc("totalEarnings"), Query.limit(4)]),
+        databases.listDocuments(DB_ID, COLLECTIONS.ORDERS, [Query.orderDesc("createdAt"), Query.limit(4)])
       ]);
 
       const revToday = ordersRes.documents.reduce((acc, curr) => acc + (curr.commissionAmount || 0), 0);
@@ -154,7 +154,7 @@ function OverviewContent() {
       else if (range === "3m") startDateStr = subMonths(now, 3).toISOString();
       else startDateStr = subYears(now, 1).toISOString();
 
-      const chartOrders = await databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.ORDERS, [
+      const chartOrders = await databases.listDocuments(DB_ID, COLLECTIONS.ORDERS, [
         Query.greaterThanEqual("createdAt", startDateStr),
         Query.limit(500)
       ]);

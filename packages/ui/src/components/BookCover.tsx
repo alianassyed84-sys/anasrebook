@@ -3,30 +3,29 @@
 import React, { useState } from "react";
 import { Book } from "lucide-react";
 const BookIcon = Book as any;
-import Image from "next/image";
+import { getStorageUrl } from "@rebookindia/firebase";
 
 interface BookCoverProps {
   isbn?: string;
   title?: string;
   coverUrl?: string; // custom cover from db
-  imageId?: string; // appwrite storage id
+  imageId?: string; // firebase storage id
   size?: "S" | "M" | "L";
   className?: string;
-  bucketId?: string; // used with imageId preview
-  projectId?: string; // used with imageId preview
+  bucketId?: string; // firebase storage bucket
 }
 
-export function BookCover({ isbn, title, coverUrl, imageId, size = "M", className, bucketId, projectId }: BookCoverProps) {
+export function BookCover({ isbn, title, coverUrl, imageId, size = "M", className, bucketId }: BookCoverProps) {
   const [imgError, setImgError] = useState(false);
 
   // Determine Image URL logic priority:
-  // 1. Appwrite Storage Image ID
+  // 1. Firebase Storage Image ID
   // 2. Exact coverUrl from DB
   // 3. OpenLibrary ISBN fetch
   let imageUrl = "";
 
-  if (imageId && bucketId && projectId) {
-      imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${imageId}/preview?project=${projectId}`;
+  if (imageId && bucketId) {
+      imageUrl = getStorageUrl(bucketId, imageId);
   } else if (coverUrl && coverUrl.trim() !== "") {
       imageUrl = coverUrl;
   } else if (isbn && isbn.trim() !== "") {

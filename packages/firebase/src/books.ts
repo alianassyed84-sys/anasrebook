@@ -1,11 +1,11 @@
 import { databases, Query } from "./client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "./config";
+import { FIREBASE_PROJECT_ID, COLLECTIONS } from "./config";
 import type { Book } from "@rebookindia/types";
 
 export const bookActions = {
   createBook: async (bookData: Omit<Book, "createdAt" | "updatedAt">) => {
     return await databases.createDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.BOOKS,
       bookData.bookId,
       {
@@ -17,7 +17,7 @@ export const bookActions = {
   },
   getBookById: async (bookId: string): Promise<Book> => {
     return (await databases.getDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.BOOKS,
       bookId
     )) as unknown as Book;
@@ -25,7 +25,7 @@ export const bookActions = {
   getAllBooks: async (filters: string[] = [], search?: string, sort?: string, limit: number = 100): Promise<Book[]> => {
     const queryList = [...filters];
     
-    if (search) queryList.push(Query.search("title", search));
+    if (search) queryList.push(Query.equal("title", search));
     if (sort) {
       if (sort === "price_asc") queryList.push(Query.orderAsc("sellingPrice"));
       if (sort === "price_desc") queryList.push(Query.orderDesc("sellingPrice"));
@@ -39,7 +39,7 @@ export const bookActions = {
     queryList.push(Query.limit(limit));
 
     const res = await databases.listDocuments(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.BOOKS,
       queryList
     );
@@ -50,7 +50,7 @@ export const bookActions = {
   },
   updateBook: async (bookId: string, data: Partial<Book>) => {
     return await databases.updateDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.BOOKS,
       bookId,
       {
@@ -61,7 +61,7 @@ export const bookActions = {
   },
   deleteBook: async (bookId: string) => {
     return await databases.deleteDocument(
-      APPWRITE_DB_ID,
+      FIREBASE_PROJECT_ID,
       COLLECTIONS.BOOKS,
       bookId
     );

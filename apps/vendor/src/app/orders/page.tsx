@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Search, Printer, CheckCircle2, Clock, Truck, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, account, Query } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, account, Query } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: any }> = {

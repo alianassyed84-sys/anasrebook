@@ -3,11 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { AdminSidebar } from "./Sidebar";
 import { Bell, Search, ExternalLink, CheckCircle } from "lucide-react";
-import { databases, Query, ID } from "@rebookindia/appwrite/src/client";
-import { APPWRITE_DB_ID, COLLECTIONS } from "@rebookindia/appwrite/src/config";
 import { useRouter, usePathname } from "next/navigation";
-import { authActions } from "@rebookindia/appwrite/src/auth";
-import { userActions } from "@rebookindia/appwrite/src/users";
+import { databases, Query, DB_ID, COLLECTIONS, ID, authActions, userActions } from "@rebookindia/firebase";
 import { Toaster } from "react-hot-toast";
 
 function formatTimeAgo(dateString: string) {
@@ -32,7 +29,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   const fetchNotifications = async () => {
     try {
-      const res = await databases.listDocuments(APPWRITE_DB_ID, COLLECTIONS.NOTIFICATIONS, [
+      const res = await databases.listDocuments(DB_ID, COLLECTIONS.NOTIFICATIONS, [
         Query.equal("recipientType", "admin"),
         Query.orderDesc("$createdAt"),
         Query.limit(10)
@@ -93,7 +90,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const markAsRead = async (id: string, currentStatus: boolean) => {
     if (currentStatus) return;
     try {
-      await databases.updateDocument(APPWRITE_DB_ID, COLLECTIONS.NOTIFICATIONS, id, { isRead: true });
+      await databases.updateDocument(DB_ID, COLLECTIONS.NOTIFICATIONS, id, { isRead: true });
       setNotifications(prev => prev.map(n => (n.$id === id ? { ...n, isRead: true } : n)));
     } catch (err) {
       console.error(err);
@@ -104,7 +101,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     try {
       const unreadList = notifications.filter(n => !n.isRead);
       for (const n of unreadList) {
-        await databases.updateDocument(APPWRITE_DB_ID, COLLECTIONS.NOTIFICATIONS, n.$id, { isRead: true });
+        await databases.updateDocument(DB_ID, COLLECTIONS.NOTIFICATIONS, n.$id, { isRead: true });
       }
       setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
       setShowDropdown(false);

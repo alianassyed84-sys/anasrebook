@@ -1,6 +1,6 @@
 // ==========================================
 // RebookIndia Shared TypeScript Models
-// Synced exactly with Appwrite Database Schema
+// Synced exactly with Firebase Firestore Schema
 // ==========================================
 
 export interface User {

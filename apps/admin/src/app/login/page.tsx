@@ -1,11 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { account, loginWithGoogle } from "@/lib/appwrite";
+import { loginWithEmail, loginWithGoogle, logout, getCurrentUser } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, BookOpen, Lock } from "lucide-react";
-
-const ADMIN_EMAIL = "admin@rebookindia.in";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -15,18 +13,33 @@ export default function AdminLogin() {
   const [loading, setLoading]   = useState(false);
   const [gLoading, setGLoading] = useState(false);
 
+  // Use environment variable or fallback for admin email
+  const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@rebookindia.in";
+
   // Check if already logged in
   useEffect(() => {
-    account.get()
+    getCurrentUser()
       .then(user => {
-        if (user.email === ADMIN_EMAIL) router.replace("/dashboard");
+        if (user && user.email === ADMIN_EMAIL) router.replace("/dashboard");
       })
       .catch(() => {});
-  }, []);
+  }, [router, ADMIN_EMAIL]);
+
+  async function handleLoginSuccess(user: any) {
+    if (user.email !== ADMIN_EMAIL) {
+      await logout();
+      toast.error("Access denied. Admin only.");
+      setLoading(false);
+      setGLoading(false);
+      return;
+    }
+    toast.success("Welcome, Admin! 👋");
+    router.push("/dashboard");
+  }
 
   // ── Email + Password Login ──────────────────────────────────
   async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();   // ← CRITICAL: stops page refresh
+    e.preventDefault();
 
     if (!email.trim() || !password.trim()) {
       toast.error("Enter email and password");
@@ -34,24 +47,10 @@ export default function AdminLogin() {
     }
     setLoading(true);
     try {
-      try { await account.deleteSession("current"); } catch {}
-      await account.createEmailPasswordSession(email.trim(), password);
-      const user = await account.get();
-
-      if (user.email !== ADMIN_EMAIL) {
-        await account.deleteSession("current");
-        toast.error("Access denied. Admin only.");
-        setLoading(false);
-        return;
-      }
-      toast.success("Welcome, Admin! 👋");
-      router.push("/dashboard");
+      const user = await loginWithEmail(email.trim(), password);
+      await handleLoginSuccess(user);
     } catch (err: any) {
-      if (err?.code === 401) {
-        toast.error("Wrong email or password.");
-      } else {
-        toast.error("Login failed. Check your connection.");
-      }
+      toast.error("Login failed: " + (err.message || "Try again"));
       setLoading(false);
     }
   }
@@ -60,12 +59,8 @@ export default function AdminLogin() {
   async function handleGoogleLogin() {
     setGLoading(true);
     try {
-      // Redirect to Google → comes back to /oauth route
-      loginWithGoogle(
-        `${window.location.origin}/oauth`,
-        `${window.location.origin}/login?error=oauth_failed`
-      );
-      // Note: page will redirect to Google — no code runs after this
+      const user = await loginWithGoogle();
+      await handleLoginSuccess(user);
     } catch (err) {
       toast.error("Google login failed. Try again.");
       setGLoading(false);
@@ -73,8 +68,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0F1F3D] flex items-center
-      justify-center p-4">
+    <div className="min-h-screen bg-[#0F1F3D] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
 
         {/* Logo */}
@@ -83,15 +77,13 @@ export default function AdminLogin() {
             <BookOpen size={30} className="text-[#E8962E]" />
             <span className="text-white text-2xl font-bold">RebookIndia</span>
           </div>
-          <div className="flex items-center justify-center gap-1
-            text-blue-300 text-sm">
+          <div className="flex items-center justify-center gap-1 text-blue-300 text-sm">
             <Lock size={13} />
             <span>Admin Panel — Authorized Access Only</span>
           </div>
         </div>
 
-        <div className="bg-[#1A2744] border border-blue-800 rounded-2xl
-          p-8 shadow-2xl">
+        <div className="bg-[#1A2744] border border-blue-800 rounded-2xl p-8 shadow-2xl">
 
           {/* ── Google Login Button ── */}
           <button
@@ -104,12 +96,9 @@ export default function AdminLogin() {
               transition-all duration-200 border border-gray-200
               shadow-sm mb-6">
             {gLoading ? (
-              <svg className="animate-spin h-5 w-5 text-gray-500"
-                viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10"
-                  stroke="currentColor" strokeWidth="4" fill="none"/>
-                <path className="opacity-75" fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+              <svg className="animate-spin h-5 w-5 text-gray-500" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
               </svg>
             ) : (
               <svg viewBox="0 0 24 24" className="w-5 h-5">
@@ -132,9 +121,7 @@ export default function AdminLogin() {
           {/* Email + Password Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="text-blue-200 text-sm block mb-1">
-                Email
-              </label>
+              <label className="text-blue-200 text-sm block mb-1">Email</label>
               <input
                 type="email"
                 value={email}
@@ -145,12 +132,10 @@ export default function AdminLogin() {
                 className="w-full bg-[#0F1F3D] border border-blue-700
                   text-white rounded-xl px-4 py-3 text-sm outline-none
                   focus:border-[#E8962E] transition-colors"
-              />
+             />
             </div>
             <div>
-              <label className="text-blue-200 text-sm block mb-1">
-                Password
-              </label>
+              <label className="text-blue-200 text-sm block mb-1">Password</label>
               <div className="relative">
                 <input
                   type={show ? "text" : "password"}
@@ -162,10 +147,9 @@ export default function AdminLogin() {
                   className="w-full bg-[#0F1F3D] border border-blue-700
                     text-white rounded-xl px-4 py-3 pr-11 text-sm
                     outline-none focus:border-[#E8962E] transition-colors"
-                />
+               />
                 <button type="button" onClick={() => setShow(s => !s)}
-                  className="absolute right-3 top-3.5 text-blue-400
-                    hover:text-white">
+                  className="absolute right-3 top-3.5 text-blue-400 hover:text-white">
                   {show ? <EyeOff size={18}/> : <Eye size={18}/>}
                 </button>
               </div>
@@ -179,10 +163,8 @@ export default function AdminLogin() {
                 justify-center gap-2">
               {loading && (
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10"
-                    stroke="currentColor" strokeWidth="4" fill="none"/>
-                  <path className="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                 </svg>
               )}
               {loading ? "Signing in..." : "Login with Email"}
@@ -190,8 +172,7 @@ export default function AdminLogin() {
           </form>
 
           {/* Demo credentials */}
-          <div className="mt-5 p-3 bg-[#0F1F3D] rounded-xl border
-            border-blue-900 text-center">
+          <div className="mt-5 p-3 bg-[#0F1F3D] rounded-xl border border-blue-900 text-center">
             <p className="text-blue-400 text-xs mb-1">Demo Credentials</p>
             <p className="text-white text-xs font-mono">
               admin@rebookindia.in / Admin@123456
