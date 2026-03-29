@@ -29,9 +29,10 @@
   },
   "packageManager": "npm@10.5.0",
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=10.0.0"
+    "node": "20.x",
+    "npm": "10.x"
   },
+
   "overrides": {
     "glob": "^11.0.0",
     "rimraf": "^6.0.1",
