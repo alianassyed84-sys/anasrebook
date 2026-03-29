@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/firebase";
 import toast from "react-hot-toast";
+import BookCover from "@/components/BookCover";
 
 const CATEGORIES = ["school", "college", "neet", "upsc", "novel", "other"];
 const SORT_OPTIONS = [
@@ -58,19 +59,24 @@ function BookCard({ book }: { book: any }) {
       >
         {/* Image */}
         <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-4 bg-gray-50">
-          <img
-            src={
-              book.isbn
-                ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`
-                : `https://images.unsplash.com/photo-1491843384429-30494622eb9d?auto=format&fit=crop&w=600&h=800&q=80`
-            }
-            alt={book.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = `https://images.unsplash.com/photo-1491843384429-30494622eb9d?auto=format&fit=crop&w=600&h=800&q=80`;
-            }}
-          />
+          {(() => {
+            const DUMMY_IMAGES = [
+              "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1495640388908-05fa85288e61?q=80&w=600&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600&auto=format&fit=crop"
+            ];
+            const charCode = book.title?.charCodeAt(0) || 0;
+            const dummySrc = DUMMY_IMAGES[charCode % DUMMY_IMAGES.length];
+            return (
+              <img
+                src={dummySrc}
+                alt={book.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+            );
+          })()}
 
           {discount > 0 && (
             <div className="absolute top-3 left-3 bg-red-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow">

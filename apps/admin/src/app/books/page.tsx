@@ -3,8 +3,17 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { Search, Trash2, CheckCircle2, Eye, Tag, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, getStorageUrl, BUCKETS } from "@rebookindia/firebase";
+import { databases, DB_ID, COLLECTIONS } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
+
+const DUMMY_IMAGES = [
+  "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=120&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=120&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=120&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1495640388908-05fa85288e61?q=80&w=120&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=120&auto=format&fit=crop",
+];
+const getImg = (title: string) => DUMMY_IMAGES[(title?.charCodeAt(0) || 0) % DUMMY_IMAGES.length];
 
 function BooksContent() {
   const [books, setBooks] = useState<any[]>([]);
@@ -106,10 +115,10 @@ function BooksContent() {
               <tr><td colSpan={4} className="p-8 text-center text-gray-400"><Loader2 className="animate-spin mx-auto" /></td></tr>
             ) : filtered.map((book) => (
               <tr key={book.$id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 flex items-center gap-4">
-                  <div className="w-10 h-14 bg-gray-100 rounded border shrink-0 overflow-hidden">
-                    {book.imageIds?.[0] && <img src={getStorageUrl(BUCKETS.BOOK_IMAGES, book.imageIds[0])} className="w-full h-full object-cover" alt="" />}
-                  </div>
+                 <td className="px-6 py-4 flex items-center gap-4">
+                   <div className="w-10 h-14 bg-gray-100 rounded border shrink-0 overflow-hidden">
+                     <img src={getImg(book.title)} className="w-full h-full object-cover" alt="" />
+                   </div>
                   <div className="min-w-0">
                     <p className="font-bold text-gray-900 truncate">{book.title}</p>
                     <p className="text-xs text-gray-500">{book.author}</p>

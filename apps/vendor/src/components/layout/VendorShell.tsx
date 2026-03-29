@@ -9,38 +9,38 @@ import { userActions } from "@rebookindia/firebase/src/users";
 import { Toaster } from "react-hot-toast";
 
 export function VendorShell({ children }: { children: React.ReactNode }) {
-  const [isAuthChecking, setIsAuthChecking] = useState(true);
+  const [isAuthChecking, setIsAuthChecking] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const authUser = await authActions.getCurrentUser();
-        if (!authUser) throw new Error("Not logged in");
-        
-        const profile = await userActions.getUserById(authUser.$id);
-        if (profile.role !== "vendor") {
-          throw new Error("Unauthorized");
-        }
-        
-        if (pathname === "/login" || pathname === "/register") {
-           setIsAuthChecking(false);
-           router.push("/");
-           return;
-        }
+  const [hasMounted, setHasMounted] = useState(false);
 
-        setIsAuthChecking(false);
-      } catch (err) {
+  useEffect(() => {
+    setHasMounted(true);
+    const checkAuth = async () => {
+      setIsAuthChecking(true);
+      const user = await authActions.getCurrentUser();
+      if (user) {
         if (pathname === "/login" || pathname === "/register") {
-           setIsAuthChecking(false);
-        } else {
+           router.push("/");
+        }
+      } else {
+        if (pathname !== "/login" && pathname !== "/register") {
            router.push("/login");
         }
       }
+      setIsAuthChecking(false);
     };
     checkAuth();
   }, [pathname, router]);
+
+  if (!hasMounted) {
+    return (
+      <div className="min-h-screen bg-brand-background flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-brand-primary/30 border-t-brand-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (isAuthChecking) {
     return (

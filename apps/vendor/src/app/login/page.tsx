@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Store } from "lucide-react";
-import { loginWithEmail, loginWithGoogle, getUserVendorData, logout, COLLECTIONS, getDocumentsByField, getCurrentUser } from "@rebookindia/firebase";
+import { loginWithEmail, loginWithGoogle, logout, COLLECTIONS, getDocumentsByField, getCurrentUser } from "@rebookindia/firebase";
 
 export default function VendorLogin() {
   const router   = useRouter();

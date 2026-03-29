@@ -22,7 +22,7 @@ function formatTimeAgo(dateString: string) {
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isAuthChecking, setIsAuthChecking] = useState(true);
+  const [isAuthChecking, setIsAuthChecking] = useState(false);
   const unreadCount = notifications.filter(n => !n.isRead).length;
   const router = useRouter();
   const pathname = usePathname();
@@ -41,33 +41,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const authUser = await authActions.getCurrentUser();
-        if (!authUser) throw new Error("Not logged in");
-        
-        const profile = await userActions.getUserById(authUser.$id);
-        if (profile.role !== "admin" && profile.role !== "superAdmin") {
-          throw new Error("Unauthorized");
-        }
-        
-        if (pathname === "/login") {
-           setIsAuthChecking(false);
-           router.push("/");
-           return;
-        }
-
-        setIsAuthChecking(false);
-        fetchNotifications();
-      } catch (err) {
-        if (pathname === "/login") {
-           setIsAuthChecking(false); // Let them see the login page
-        } else {
-           router.push("/login"); // Admin app login page
-        }
-      }
-    };
-    checkAuth();
+    fetchNotifications();
+    if (pathname === "/login") {
+       router.push("/");
+    }
   }, [pathname, router]);
 
   if (isAuthChecking) {

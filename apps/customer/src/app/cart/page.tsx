@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, getStorageUrl, BUCKETS } from "@rebookindia/firebase";
 import toast from "react-hot-toast";
+import BookCover from "@/components/BookCover";
 
 export default function CartPage() {
   const router = useRouter();
@@ -137,19 +138,24 @@ export default function CartPage() {
                     className="bg-white rounded-[2.5rem] p-6 border border-gray-100 flex flex-col md:flex-row gap-8 relative group"
                   >
                     <div className="w-full md:w-32 aspect-[3/4] bg-brand-background rounded-2xl overflow-hidden shrink-0">
-                      <img
-                        src={
-                          item.isbn
-                            ? `https://covers.openlibrary.org/b/isbn/${item.isbn}-M.jpg`
-                            : `https://images.unsplash.com/photo-1491843384429-30494622eb9d?auto=format&fit=crop&w=600&h=800&q=80`
-                        }
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = `https://images.unsplash.com/photo-1491843384429-30494622eb9d?auto=format&fit=crop&w=600&h=800&q=80`;
-                        }}
-                      />
+                      {(() => {
+                        const DUMMY_IMAGES = [
+                          "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop",
+                          "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop",
+                          "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop",
+                          "https://images.unsplash.com/photo-1495640388908-05fa85288e61?q=80&w=600&auto=format&fit=crop",
+                          "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600&auto=format&fit=crop"
+                        ];
+                        const charCode = item.title?.charCodeAt(0) || 0;
+                        const dummySrc = DUMMY_IMAGES[charCode % DUMMY_IMAGES.length];
+                        return (
+                          <img
+                            src={dummySrc}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                        );
+                      })()}
                     </div>
 
                     <div className="flex-1 flex flex-col justify-between py-2">

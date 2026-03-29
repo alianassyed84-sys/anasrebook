@@ -77,10 +77,6 @@ export const Sidebar = () => {
                   <p className="text-[10px] font-bold text-brand-success uppercase tracking-widest">Active</p>
                </div>
             </div>
-            <button className="w-full py-3 bg-white text-gray-400 rounded-xl font-bold text-xs hover:text-red-500 hover:bg-red-50 transition-all flex items-center justify-center gap-2 border border-gray-100">
-               <LogOut size={14} />
-               Sign Out
-            </button>
          </div>
       </div>
     </aside>

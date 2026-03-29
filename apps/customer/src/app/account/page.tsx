@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { account, databases, DB_ID, COLLECTIONS, Query } from "@/lib/firebase";
 import toast from "react-hot-toast";
+import ImageUploader from "@/components/ImageUploader";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const [newName, setNewName] = useState("");
   const [orders, setOrders] = useState<any[]>([]);
+  const [photoUrl, setPhotoUrl] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +36,7 @@ export default function AccountPage() {
         const u = await account.get();
         setUser(u);
         setNewName(u.name);
+        setPhotoUrl(u.prefs?.photoUrl || "");
         
         // Fetch orders
         const ordersRes = await databases.listDocuments(
@@ -89,11 +92,41 @@ export default function AccountPage() {
             <div className="bg-white rounded-[3rem] p-10 border border-gray-100 shadow-sm text-center space-y-6 relative overflow-hidden">
                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-secondary/5 rounded-full blur-3xl -z-0" />
                
-               <div className="relative mx-auto w-32 h-32 bg-brand-light rounded-[2.5rem] flex items-center justify-center text-4xl font-black text-brand-primary shadow-xl">
-                 {user?.name?.[0] || "U"}
+               <div className="relative mx-auto w-32 h-32">
+                 {photoUrl ? (
+                   <img
+                     src={photoUrl}
+                     alt="Profile"
+                     className="w-32 h-32 rounded-[2.5rem] object-cover shadow-xl"
+                   />
+                 ) : (
+                   <div className="w-32 h-32 bg-brand-light rounded-[2.5rem] flex items-center justify-center text-4xl font-black text-brand-primary shadow-xl">
+                     {user?.name?.[0] || "U"}
+                   </div>
+                 )}
                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-brand-success border-4 border-white rounded-full flex items-center justify-center text-white shadow-lg">
                     <ShieldCheck size={18} />
                  </div>
+               </div>
+
+               {/* Profile Photo Upload */}
+               <div className="w-full">
+                 <ImageUploader
+                   label="Profile Photo"
+                   folder="rebookindia/profiles"
+                   aspectRatio="square"
+                   currentUrl={photoUrl}
+                   onUpload={async (url, id) => {
+                     setPhotoUrl(url);
+                     try {
+                       await account.updatePrefs({ photoUrl: url, photoPublicId: id });
+                       toast.success("Profile photo updated! 📸");
+                     } catch {
+                       toast.error("Could not save photo to profile.");
+                     }
+                   }}
+                   onRemove={() => setPhotoUrl("")}
+                 />
                </div>
 
                <div className="space-y-4">

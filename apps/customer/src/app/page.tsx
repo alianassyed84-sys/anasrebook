@@ -12,44 +12,54 @@ import { Testimonials } from "@/components/home/Testimonials";
 import { ImpactCounter } from "@/components/home/ImpactCounter";
 import { AppDownload } from "@/components/home/AppDownload";
 import { Newsletter } from "@/components/home/Newsletter";
-import { bookActions, getStorageUrl } from "@rebookindia/firebase";
-import { BUCKETS } from "@rebookindia/firebase/src/config";
-import type { Book } from "@rebookindia/types";
+import { databases, DB_ID, COLLECTIONS } from "@rebookindia/firebase";
 
-function getBookImageUrl(imageIds: string[]): string {
-  if (!imageIds || imageIds.length === 0) return "";
-  return getStorageUrl(BUCKETS.BOOK_IMAGES, imageIds[0]);
+const DUMMY_IMAGES = [
+  "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1495640388908-05fa85288e61?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1610882648335-ced8fc8fa6b6?q=80&w=600&auto=format&fit=crop",
+];
+
+function getBookImage(title: string) {
+  const idx = (title?.charCodeAt(0) || 0) % DUMMY_IMAGES.length;
+  return DUMMY_IMAGES[idx];
 }
 
-function toProductScrollFormat(books: Book[]) {
+function toScrollFormat(books: any[]) {
   return books.map((b) => ({
-    id: b.bookId,
+    id: b.$id || b.id,
     title: b.title,
     author: b.author,
-    mrp: b.mrp,
-    price: b.sellingPrice,
+    mrp: Number(b.mrp) || 0,
+    price: Number(b.sellingPrice) || 0,
     discount: b.mrp > 0 ? Math.round(((b.mrp - b.sellingPrice) / b.mrp) * 100) : 0,
     condition: b.condition,
-    image: getBookImageUrl(b.imageIds),
+    image: getBookImage(b.title),
+    isbn: b.isbn,
+    coverUrl: b.coverUrl,
   }));
 }
 
 export default function Home() {
-  const [schoolBooks, setSchoolBooks] = useState<ReturnType<typeof toProductScrollFormat>>([]);
-  const [neetBooks, setNeetBooks] = useState<ReturnType<typeof toProductScrollFormat>>([]);
-  const [allBooks, setAllBooks] = useState<ReturnType<typeof toProductScrollFormat>>([]);
+  const [schoolBooks, setSchoolBooks] = useState<any[]>([]);
+  const [neetBooks, setNeetBooks] = useState<any[]>([]);
+  const [allBooks, setAllBooks] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const all = await bookActions.getAllBooks();
-        setAllBooks(toProductScrollFormat(all.slice(0, 10)));
-
-        const school = all.filter((b) => b.category === "school");
-        setSchoolBooks(toProductScrollFormat(school.slice(0, 8)));
-
-        const neet = all.filter((b) => b.category === "neet");
-        setNeetBooks(toProductScrollFormat(neet.slice(0, 8)));
+        const [allRes, schoolRes, neetRes] = await Promise.all([
+          databases.listDocuments(DB_ID, COLLECTIONS.BOOKS, [{ type: "limit", value: 10 }]),
+          databases.listDocuments(DB_ID, COLLECTIONS.BOOKS, [{ type: "where", field: "category", operator: "==", value: "school" }]),
+          databases.listDocuments(DB_ID, COLLECTIONS.BOOKS, [{ type: "where", field: "category", operator: "==", value: "neet" }]),
+        ]);
+        setAllBooks(toScrollFormat(allRes.documents));
+        setSchoolBooks(toScrollFormat(schoolRes.documents.slice(0, 8)));
+        setNeetBooks(toScrollFormat(neetRes.documents.slice(0, 8)));
       } catch (err) {
         console.error("Failed to fetch books for homepage", err);
       }
@@ -74,7 +84,7 @@ export default function Home() {
 
       <ProductScroll
         title="Competitive Edge"
-        subtitle="Best-selling NEET & JEE preparation books at 50% off."
+        subtitle="Best-selling NEET &amp; JEE preparation books at 50% off."
         books={neetBooks.length > 0 ? neetBooks : allBooks}
         viewAllHref="/books?category=neet"
       />

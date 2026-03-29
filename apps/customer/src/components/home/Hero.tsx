@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import BookCover from "@/components/BookCover";
 
 export const Hero = () => {
   const router = useRouter();
@@ -67,11 +68,12 @@ export const Hero = () => {
               onClick={() => router.push("/books")}
             >
               <img
-                src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
+                src={(book as any).coverUrl || `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
                 alt={book.title}
                 className="w-full h-32 object-cover rounded-lg mb-2"
                 onError={(e) => {
-                  e.currentTarget.src = `https://images.unsplash.com/photo-1491843384429-30494622eb9d?auto=format&fit=crop&w=300&h=400&q=80`;
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = `https://placehold.co/180x240/1B3A6B/white?text=${encodeURIComponent(book.title?.slice(0,12) || "Book")}`;
                 }}
               />
               <p className="text-white text-xs font-medium line-clamp-1">{book.title}</p>

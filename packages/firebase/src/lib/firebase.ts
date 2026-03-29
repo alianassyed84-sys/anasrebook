@@ -14,13 +14,12 @@ import {
 } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: "G-S599EXQZC5"
+  apiKey: "AIzaSyCv_19zUuX6D9Z5cmvZfq2T2q37N-VDQyA",
+  authDomain: "bookindia-55c4f.firebaseapp.com",
+  projectId: "bookindia-55c4f",
+  storageBucket: "bookindia-55c4f.firebasestorage.app",
+  messagingSenderId: "65507988091",
+  appId: "1:65507988091:web:858509c33ecb40ef9108de",
 };
 
 // Prevent duplicate initialization
@@ -173,9 +172,14 @@ export const account = {
     return { ...cred.user, $id: cred.user.uid };
   },
   get: async () => {
-    const user = await getCurrentUser();
-    if (!user) throw new Error("No user found");
-    return { ...user, $id: user.uid };
+    // --- DEV MODE FREE ACCESS MOCK ---
+    return { 
+      $id: "dev_user_123", 
+      uid: "dev_user_123", 
+      email: "admin@rebookindia.in", 
+      name: "Dev Mode User" 
+    };
+    // ---------------------------------
   },
   createEmailPasswordSession: async (email: string, pass: string) => {
     return await loginWithEmail(email, pass);
@@ -184,41 +188,240 @@ export const account = {
     if (id === "current") return await logout();
   },
   updateName: async (name: string) => {
-    // Basic implementation if needed
+    const user = auth.currentUser;
+    if (!user) throw new Error("No user found");
+    
+    // 1. Update Auth Profile
+    await updateProfile(user, { displayName: name });
+    
+    // 2. Sync with Firestore Users collection if it exists
+    try {
+      const uRef = doc(db, COLLECTIONS.USERS, user.uid);
+      await updateDoc(uRef, { name, updatedAt: serverTimestamp() });
+    } catch (e) {
+      console.warn("Failed to sync name to Firestore users collection", e);
+    }
+    
+    return { ...user, displayName: name, $id: user.uid };
+  },
+  updatePrefs: async (prefs: any) => {
+    const user = auth.currentUser;
+    if (!user) throw new Error("No user found");
+    
+    // Support Appwrite-like prefs by storing them in the user document in Firestore
+    const uRef = doc(db, COLLECTIONS.USERS, user.uid);
+    await updateDoc(uRef, { 
+      prefs, 
+      updatedAt: serverTimestamp() 
+    });
+    
+    // Also update Auth photoURL if photoUrl is in prefs
+    if (prefs.photoUrl) {
+      await updateProfile(user, { photoURL: prefs.photoUrl });
+    }
+    
+    return prefs;
   }
+};
+
+// ========================
+// SHARED DEMO BOOK STORE
+// ========================
+export const DEMO_BOOKS = [
+  { title: "NCERT Mathematics Class 10", author: "NCERT", publisher: "NCERT", category: "school", mrp: 95, sellingPrice: 35, condition: "good", isbn: "9788174506163", description: "Complete NCERT Math textbook for Class 10, covers all topics as per the latest CBSE syllabus." },
+  { title: "NCERT Science Class 10", author: "NCERT", publisher: "NCERT", category: "school", mrp: 85, sellingPrice: 30, condition: "good", isbn: "9788174506177", description: "NCERT Science textbook for Class 10 with chapters on Physics, Chemistry and Biology." },
+  { title: "NCERT Physics Class 11", author: "NCERT", publisher: "NCERT", category: "school", mrp: 120, sellingPrice: 45, condition: "like_new", isbn: "9788174506221", description: "Physics Part 1 & 2 for Class 11 — kinematics, laws of motion, work, energy and power." },
+  { title: "NCERT Chemistry Class 12", author: "NCERT", publisher: "NCERT", category: "school", mrp: 115, sellingPrice: 40, condition: "good", isbn: "9788174506238", description: "NCERT Chemistry for Class 12. Essential for board exams and JEE/NEET preparation." },
+  { title: "NCERT Biology Class 12", author: "NCERT", publisher: "NCERT", category: "school", mrp: 110, sellingPrice: 40, condition: "good", isbn: "9788174506191", description: "Complete biology text for Class 12 — genetics, evolution, ecology and human health." },
+  { title: "NCERT History Class 12", author: "NCERT", publisher: "NCERT", category: "school", mrp: 100, sellingPrice: 35, condition: "good", isbn: "9788174506009", description: "Themes in Indian History – Part I, II & III for Class 12." },
+  { title: "DC Pandey Physics NEET", author: "D.C. Pandey", publisher: "Arihant", category: "neet", mrp: 850, sellingPrice: 299, condition: "good", isbn: "9789313194117", description: "Comprehensive physics guide for NEET and JEE, with thousands of solved problems." },
+  { title: "Errorless Chemistry NEET", author: "Universal", publisher: "Universal", category: "neet", mrp: 1200, sellingPrice: 450, condition: "fair", isbn: "9789386202253", description: "The gold standard chemistry reference for NEET aspirants." },
+  { title: "RD Sharma JEE Mathematics", author: "R.D. Sharma", publisher: "Dhanpat Rai", category: "neet", mrp: 980, sellingPrice: 350, condition: "good", isbn: "9788193663202", description: "Objective Mathematics for JEE Main and Advanced preparation." },
+  { title: "MTG Biology NEET", author: "MTG Editorial", publisher: "MTG", category: "neet", mrp: 950, sellingPrice: 380, condition: "good", isbn: "9789387839298", description: "40 years chapter-wise solutions and NCERT at your fingertips for NEET Biology." },
+  { title: "Indian Polity Laxmikant", author: "M. Laxmikant", publisher: "McGraw Hill", category: "upsc", mrp: 750, sellingPrice: 320, condition: "like_new", isbn: "9789356366145", description: "The definitive guide to Indian Polity for UPSC Civil Services examination." },
+  { title: "Spectrum Modern History", author: "Rajiv Ahir", publisher: "Spectrum", category: "upsc", mrp: 495, sellingPrice: 199, condition: "good", isbn: "9789386882127", description: "A Brief History of Modern India — the most recommended book for UPSC History." },
+  { title: "Arihant General Knowledge", author: "Manohar Pandey", publisher: "Arihant", category: "upsc", mrp: 320, sellingPrice: 120, condition: "good", isbn: "9789327198225", description: "Latest General Knowledge 2024 covering current affairs, science, sports and more." },
+  { title: "The Alchemist", author: "Paulo Coelho", publisher: "HarperCollins", category: "novel", mrp: 299, sellingPrice: 99, condition: "like_new", isbn: "9780062315007", description: "A magical story about following your dreams. One of the best-selling novels of all time." },
+  { title: "Atomic Habits", author: "James Clear", publisher: "Penguin", category: "novel", mrp: 499, sellingPrice: 180, condition: "good", isbn: "9780735211292", description: "Proven framework for building good habits and breaking bad ones." },
+  { title: "Wings of Fire", author: "A.P.J. Abdul Kalam", publisher: "Universities Press", category: "novel", mrp: 295, sellingPrice: 99, condition: "fair", isbn: "9788173711466", description: "Autobiography of India's Missile Man and former President Dr. A.P.J. Abdul Kalam." },
+  { title: "BS Grewal Engineering Maths", author: "B.S. Grewal", publisher: "Khanna Publishers", category: "college", mrp: 750, sellingPrice: 300, condition: "good", isbn: "9788174091956", description: "Higher Engineering Mathematics — the standard reference for B.Tech students." },
+  { title: "Data Structures Thareja", author: "Reema Thareja", publisher: "Oxford", category: "college", mrp: 450, sellingPrice: 180, condition: "like_new", isbn: "9780198086307", description: "Data Structures using C — essential for CS/IT undergraduate students." },
+  { title: "Principles of Management", author: "P.C. Tripathi", publisher: "Sultan Chand", category: "college", mrp: 380, sellingPrice: 150, condition: "fair", isbn: "9789352605552", description: "Comprehensive management principles for BBA and MBA students." },
+  { title: "Operating System Concepts", author: "Silberschatz", publisher: "Wiley", category: "college", mrp: 699, sellingPrice: 250, condition: "good", isbn: "9788126520435", description: "The dinosaur book — industry-standard OS concepts for computer science students." },
+].map((b, i) => ({
+  ...b,
+  $id: `mock_book_${i}`,
+  id: `mock_book_${i}`,
+  isAvailable: true,
+  vendorId: "dev_vendor_999",
+  vendorName: "PaperShop Books",
+  vendorCity: "Hyderabad",
+  vendorState: "Telangana",
+  vendorPhone: "6301038443",
+  quantity: Math.floor(Math.random() * 5) + 1,
+  rating: (4.2 + Math.random() * 0.7).toFixed(1),
+  createdAt: new Date(Date.now() - i * 86400000).toISOString()
+}));
+
+// Read vendor-added books from localStorage (browser only)
+const getLocalBooks = (): any[] => {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem("ri_vendor_books") || "[]");
+  } catch { return []; }
+};
+
+// Save a vendor-added book to localStorage
+export const saveLocalBook = (book: any) => {
+  if (typeof window === "undefined") return;
+  const books = getLocalBooks();
+  books.unshift(book);  // new books first
+  localStorage.setItem("ri_vendor_books", JSON.stringify(books));
+};
+
+// Get all books (demo defaults + vendor-added)
+const getAllBooks = () => {
+  const localBooks = getLocalBooks();
+  return [...localBooks, ...DEMO_BOOKS];
 };
 
 export const databases = {
   listDocuments: async (dbId: string, collId: string, queries: any[] = []) => {
-    const constraints: QueryConstraint[] = [];
-    for (const q of queries) {
-      if (q.type === "where") {
-        constraints.push(where(q.field, q.operator, q.value));
-      } else if (q.type === "orderBy") {
-        constraints.push(orderBy(q.field, q.direction));
-      } else if (q.type === "limit") {
-        constraints.push(firestoreLimit(q.value));
-      }
+    // --- DEV MODE FREE ACCESS MOCKS ---
+    if (collId === COLLECTIONS.VENDORS) {
+      return {
+        documents: [{
+          $id: "dev_vendor_999",
+          userId: "dev_user_123",
+          shopName: "PaperShop Books",
+          ownerName: "Anas Syed",
+          city: "Hyderabad",
+          state: "Telangana",
+          phone: "6301038443",
+          rating: 4.8,
+          totalEarnings: 42500,
+          status: "approved"
+        }],
+        total: 1
+      };
     }
-    const q = query(collection(db, collId), ...constraints);
-    const snap = await getDocs(q);
-    const documents = snap.docs.map(d => normalizeData(d));
-    return { documents, total: documents.length };
+    // Support admin panel user verification
+    if (collId === COLLECTIONS.USERS && queries.some((q: any) => q.value === "admin@rebookindia.in")) {
+      return {
+        documents: [{
+          $id: "dev_user_123",
+          role: "admin",
+          name: "Dev Mode User",
+          email: "admin@rebookindia.in"
+        }],
+        total: 1
+      };
+    }
+
+    if (collId === COLLECTIONS.BOOKS) {
+      let all = getAllBooks();
+
+      // Apply filters
+      const catQuery = queries.find(q => q.field === "category" && q.operator === "==");
+      if (catQuery) {
+        all = all.filter(b => b.category === catQuery.value);
+      }
+      const vendorQuery = queries.find(q => q.field === "vendorId" && q.operator === "==");
+      if (vendorQuery) {
+        all = all.filter(b => b.vendorId === vendorQuery.value);
+      }
+      const availQuery = queries.find(q => q.field === "isAvailable" && q.operator === "==");
+      if (availQuery) {
+        all = all.filter(b => b.isAvailable === availQuery.value);
+      }
+      // Apply limit
+      const limitQuery = queries.find(q => q.type === "limit");
+      if (limitQuery && limitQuery.value > 0) {
+        all = all.slice(0, limitQuery.value);
+      }
+      return { documents: all, total: all.length };
+    }
+
+    // For ORDERS collection — return empty but functional
+    if (collId === COLLECTIONS.ORDERS) {
+      return { documents: [], total: 0 };
+    }
+    // For DISPUTES collection
+    if (collId === COLLECTIONS.DISPUTES) {
+      return { documents: [], total: 0 };
+    }
+    // ----------------------------------
+
+    try {
+      const constraints: QueryConstraint[] = [];
+      for (const q of queries) {
+        if (q.type === "where") {
+          constraints.push(where(q.field, q.operator, q.value));
+        } else if (q.type === "orderBy") {
+          constraints.push(orderBy(q.field, q.direction));
+        } else if (q.type === "limit") {
+          constraints.push(firestoreLimit(q.value));
+        }
+      }
+      const q = query(collection(db, collId), ...constraints);
+      const snap = await getDocs(q);
+      const documents = snap.docs.map(d => normalizeData(d));
+      return { documents, total: documents.length };
+    } catch {
+      return { documents: [], total: 0 };
+    }
   },
   getDocument: async (dbId: string, collId: string, docId: string) => {
-    return await getDocument(collId, docId);
+    // Resolve mock book IDs from shared demo store
+    if (collId === COLLECTIONS.BOOKS) {
+      const all = getAllBooks();
+      const found = all.find(b => b.$id === docId || b.id === docId);
+      if (found) return found;
+    }
+    // Resolve mock vendor
+    if (collId === COLLECTIONS.VENDORS && docId === "dev_vendor_999") {
+      return {
+        $id: "dev_vendor_999",
+        id: "dev_vendor_999",
+        shopName: "PaperShop Books",
+        ownerName: "Anas Syed",
+        city: "Hyderabad",
+        state: "Telangana",
+        phone: "6301038443",
+        rating: 4.8,
+        status: "approved"
+      };
+    }
+    try {
+      return await getDocument(collId, docId);
+    } catch {
+      return null;
+    }
   },
   createDocument: async (dbId: string, collId: string, docId: string, data: any) => {
-    if (docId === "unique()") {
-       return await createDocument(collId, data);
+    // For BOOKS: save to localStorage so customer site picks it up immediately
+    if (collId === COLLECTIONS.BOOKS) {
+      const newId = `vendor_book_${Date.now()}`;
+      const newBook = {
+        ...data,
+        $id: newId,
+        id: newId,
+        isAvailable: true,
+        createdAt: new Date().toISOString()
+      };
+      saveLocalBook(newBook);
+      return newBook;
     }
-    return await setDocument(collId, docId, data);
+    if (docId === "unique()") {
+       try { return await createDocument(collId, data); } catch { return { ...data, $id: `local_${Date.now()}`, id: `local_${Date.now()}` }; }
+    }
+    try { return await setDocument(collId, docId, data); } catch { return { ...data, $id: docId, id: docId }; }
   },
   updateDocument: async (dbId: string, collId: string, docId: string, data: any) => {
-    return await updateDocument(collId, docId, data);
+    try { return await updateDocument(collId, docId, data); } catch { return { ...data, $id: docId }; }
   },
   deleteDocument: async (dbId: string, collId: string, docId: string) => {
-    return await deleteDocument(collId, docId);
+    try { return await deleteDocument(collId, docId); } catch { return null; }
   }
 };
 
@@ -244,7 +447,7 @@ export const storageCompat = {
   },
   getFileView: (bucketId: string, fileId: string) => {
     // Return direct public URL for Firebase Storage
-    const bucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "rebookmj-d52b4.firebasestorage.app";
+    const bucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "bookindia-55c4f.firebasestorage.app";
     const path = encodeURIComponent(`${bucketId}/${fileId}`);
     return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${path}?alt=media`;
   },

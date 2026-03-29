@@ -2,7 +2,16 @@
 const nextConfig = {
   transpilePackages: ["@rebookindia/ui", "@rebookindia/firebase", "@rebookindia/utils", "@rebookindia/types"],
   images: {
+    unoptimized: true,
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
       {
         protocol: "https",
         hostname: "firebasestorage.googleapis.com",

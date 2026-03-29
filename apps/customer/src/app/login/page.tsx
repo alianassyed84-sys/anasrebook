@@ -25,7 +25,7 @@ export default function CustomerLogin() {
       const userDoc = await getDocument(COLLECTIONS.USERS, user.uid);
       if (!userDoc) {
         await setDocument(COLLECTIONS.USERS, user.uid, {
-          uid: user.uid,
+          userId: user.uid,
           name: user.displayName || additionalData.name || "Customer",
           email: user.email,
           phone: user.phoneNumber || additionalData.phone || "",

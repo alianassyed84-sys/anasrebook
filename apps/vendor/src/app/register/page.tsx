@@ -3,14 +3,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { 
-  Store, ArrowRight, Upload, CheckCircle2, 
-  MapPin, Phone, Mail, Camera, ShieldCheck, Lock
+  Store, ArrowRight, CheckCircle2, 
+  MapPin, Phone, Mail, ShieldCheck, Lock
 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authActions, userActions, databases, ID, DB_ID, COLLECTIONS } from "@rebookindia/firebase";
 import toast, { Toaster } from "react-hot-toast";
+import ImageUploader from "@/components/ImageUploader";
 
 const STEPS = ["Store Details", "KYC Documents", "Bank Account", "Review & Submit"];
 const PLANS = [
@@ -36,6 +36,12 @@ export default function VendorRegisterPage() {
   const [bankName, setBankName] = useState("");
   const [bankAccountNo, setBankAccountNo] = useState("");
   const [bankIFSC, setBankIFSC] = useState("");
+
+  // Cloudinary photo states
+  const [shopPhotoUrl, setShopPhotoUrl] = useState("");
+  const [shopPhotoPublicId, setShopPhotoPublicId] = useState("");
+  const [kycUrl, setKycUrl] = useState("");
+  const [kycPublicId, setKycPublicId] = useState("");
 
   const [plan, setPlan] = useState("gold");
 
@@ -71,12 +77,14 @@ export default function VendorRegisterPage() {
          email,
          address,
          city,
-         state: "", // Add if needed
+         state: "",
          pincode,
          latitude: 0,
          longitude: 0,
-         shopPhotoId: "pending",
-         aadhaarDocId: "pending",
+         shopPhotoUrl,
+         shopPhotoPublicId,
+         kycDocUrl: kycUrl,
+         kycDocPublicId: kycPublicId,
          bankAccountNo,
          bankIFSC,
          bankName,
@@ -189,24 +197,24 @@ export default function VendorRegisterPage() {
           {step === 1 && (
             <div className="space-y-6">
               <h2 className="text-2xl font-black text-brand-primary">KYC Verification</h2>
-              <p className="text-gray-500 font-medium">Required by RBI guidelines. Your documents are encrypted and stored securely.</p>
+              <p className="text-gray-500 font-medium">Required for verification. Your documents are stored securely on Cloudinary.</p>
               <div className="space-y-6">
-                {["GST Certificate", "Shop License / FSSAI", "Owner ID (Aadhar / PAN)"].map((doc) => (
-                  <div key={doc} className="flex items-center justify-between p-6 bg-brand-background rounded-2xl border-2 border-dashed border-gray-200 hover:border-brand-primary/30 cursor-pointer group transition-all">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
-                        <Upload size={22} className="text-gray-400 group-hover:text-brand-primary transition-colors" />
-                      </div>
-                      <div>
-                        <p className="font-bold text-brand-primary">{doc}</p>
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">JPG, PNG, PDF · Max 5MB</p>
-                      </div>
-                    </div>
-                    <button className="px-5 py-2.5 bg-brand-primary text-white rounded-xl text-xs font-black hover:bg-brand-secondary transition-all">
-                      Upload
-                    </button>
-                  </div>
-                ))}
+                <ImageUploader
+                  label="Shop Photo"
+                  folder="rebookindia/vendors/shops"
+                  aspectRatio="wide"
+                  currentUrl={shopPhotoUrl}
+                  onUpload={(url, id) => { setShopPhotoUrl(url); setShopPhotoPublicId(id); }}
+                  onRemove={() => { setShopPhotoUrl(""); setShopPhotoPublicId(""); }}
+                />
+                <ImageUploader
+                  label="Aadhaar / Owner ID (for verification)"
+                  folder="rebookindia/vendors/kyc"
+                  aspectRatio="wide"
+                  currentUrl={kycUrl}
+                  onUpload={(url, id) => { setKycUrl(url); setKycPublicId(id); }}
+                  onRemove={() => { setKycUrl(""); setKycPublicId(""); }}
+                />
               </div>
               <div className="flex items-center gap-3 p-4 bg-brand-light/30 rounded-2xl border border-brand-secondary/10 text-sm font-bold text-brand-primary">
                 <ShieldCheck size={20} className="text-brand-success shrink-0" />

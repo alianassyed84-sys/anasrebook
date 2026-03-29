@@ -5,17 +5,8 @@ import Link from 'next/link';
 import { notFound, useRouter, useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { ShoppingCart, Heart, MessageCircle, Star, MapPin, Package, Check, ChevronRight, ChevronDown } from 'lucide-react';
-import { databases, DB_ID, COLLECTIONS, account, getStorageUrl, BUCKETS } from "@rebookindia/firebase";
-
-const BookCoverImage = ({ isbn, title, coverUrl, className }: any) => {
-    const getImageUrl = (fileId: string) => {
-        return getStorageUrl(BUCKETS.BOOK_IMAGES, fileId);
-    };
-    const placeholderUrl = `https://images.unsplash.com/photo-1491843384429-30494622eb9d?auto=format&fit=crop&w=800&h=1000&q=80`;
-    const imageUrl = isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg` : (coverUrl ? getImageUrl(coverUrl) : placeholderUrl);
-    
-    return <img src={imageUrl} alt={title} className={className || "w-full max-w-[280px] md:max-w-full mx-auto shadow-2xl rounded-sm"} />;
-};
+import { databases, DB_ID, COLLECTIONS, account } from "@rebookindia/firebase";
+import BookCover from "@/components/BookCover";
 
 export default function BookDetailPage() {
     const params = useParams();
@@ -58,11 +49,31 @@ export default function BookDetailPage() {
         const fetchData = async () => {
             try {
                 const bookData = await databases.getDocument(DB_ID, COLLECTIONS.BOOKS, id);
+                if (!bookData) {
+                    toast.error("Book not found!");
+                    router.push("/books");
+                    return;
+                }
                 setBook(bookData);
                 
+                // Try to fetch vendor; fall back to embedded vendor info in book
                 if (bookData.vendorId) {
-                    const vendorData = await databases.getDocument(DB_ID, COLLECTIONS.VENDORS, bookData.vendorId);
-                    setVendor(vendorData);
+                    try {
+                        const vendorData = await databases.getDocument(DB_ID, COLLECTIONS.VENDORS, bookData.vendorId);
+                        setVendor(vendorData || {
+                            shopName: bookData.vendorName || "PaperShop Books",
+                            city: bookData.vendorCity || "Hyderabad",
+                            state: bookData.vendorState || "Telangana",
+                            phone: bookData.vendorPhone || "6301038443",
+                        });
+                    } catch {
+                        setVendor({
+                            shopName: bookData.vendorName || "PaperShop Books",
+                            city: bookData.vendorCity || "Hyderabad",
+                            state: bookData.vendorState || "Telangana",
+                            phone: bookData.vendorPhone || "6301038443",
+                        });
+                    }
                 }
             } catch (err) {
                 toast.error("Book not found!");
@@ -104,7 +115,8 @@ export default function BookDetailPage() {
     // Map properties from old database to new UI format
     const bookCategory = book.category || book.category_id || "Uncategorized";
     const bookId = book.$id || book.id;
-    const coverUrl = book.imageIds?.[0] || book.cover_url || book.coverUrl;
+    // Cloudinary URL prioritized, then fallback to first imageId from Firebase
+    const coverUrl = book.coverUrl || book.imageIds?.[0];
     
     const ourPrice = Number(book.sellingPrice || book.ourPrice || 0);
     const mrp = Number(book.mrp || 0);
@@ -114,7 +126,7 @@ export default function BookDetailPage() {
     const vendorEarn = Number(book.vendorEarn || Math.round(ourPrice * 0.8));
     const riEarn = Number(book.riEarn || Math.round(ourPrice * 0.2));
 
-    const waBook = `https://wa.me/918801550189?text=Hi%20RebookIndia,%20I%20need%20help%20with%20buying%20${book.title}.`;
+    const waBook = `https://wa.me/916301038443?text=Hi%20RebookIndia,%20I%20need%20help%20with%20buying%20${book.title}.`;
     let waVendor = waBook;
     
     if (vendor && vendor.phone) {
@@ -142,7 +154,24 @@ export default function BookDetailPage() {
                     {/* Left: Image */}
                     <div className="md:col-span-4 lg:col-span-3">
                         <div className="md:sticky md:top-24">
-                            <BookCoverImage isbn={book.isbn || ''} title={book.title} coverUrl={coverUrl} />
+                            {(() => {
+                              const DUMMY_IMAGES = [
+                                "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop",
+                                "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop",
+                                "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop",
+                                "https://images.unsplash.com/photo-1495640388908-05fa85288e61?q=80&w=600&auto=format&fit=crop",
+                                "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600&auto=format&fit=crop"
+                              ];
+                              const charCode = book.title?.charCodeAt(0) || 0;
+                              const dummySrc = DUMMY_IMAGES[charCode % DUMMY_IMAGES.length];
+                              return (
+                                <img
+                                  src={dummySrc}
+                                  alt={book.title}
+                                  className="w-full max-w-[280px] md:max-w-full mx-auto shadow-2xl rounded-sm aspect-[3/4] object-cover"
+                                />
+                              );
+                            })()}
                             <div className="mt-4 flex gap-2 justify-center">
                                 <button
                                     onClick={() => { toggleWishlist(bookId); toast.success("Wishlist updated"); }}
@@ -324,7 +353,26 @@ export default function BookDetailPage() {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                             {similarBooks.map(b => (
                                 <Link href={`/book/${b.$id || b.id}`} key={b.$id || b.id} className="bg-white group rounded-sm shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col hover:-translate-y-1 border border-[var(--color-ldust)]">
-                                    <BookCoverImage isbn={b.isbn || ''} title={b.title} coverUrl={b.imageIds?.[0] || b.cover_url || b.coverUrl} />
+                                    <div className="w-full aspect-[3/4] overflow-hidden">
+                                        {(() => {
+                                          const DUMMY_IMAGES = [
+                                            "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop",
+                                            "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop",
+                                            "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop",
+                                            "https://images.unsplash.com/photo-1495640388908-05fa85288e61?q=80&w=600&auto=format&fit=crop",
+                                            "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600&auto=format&fit=crop"
+                                          ];
+                                          const charCode = b.title?.charCodeAt(0) || 0;
+                                          const dummySrc = DUMMY_IMAGES[charCode % DUMMY_IMAGES.length];
+                                          return (
+                                            <img
+                                              src={dummySrc}
+                                              alt={b.title}
+                                              className="w-full h-full object-cover"
+                                            />
+                                          );
+                                        })()}
+                                    </div>
                                     <div className="p-3">
                                         <h3 className="font-display font-bold text-xs text-[var(--color-ink)] line-clamp-1 mb-1 group-hover:text-[var(--color-rust)]">{b.title}</h3>
                                         <div className="flex items-baseline gap-2">

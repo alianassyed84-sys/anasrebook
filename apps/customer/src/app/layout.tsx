@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { DemoBanner } from "@/components/layout/DemoBanner";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import SeedRunner from "@/components/SeedRunner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,9 @@ export default function RootLayout({
           <DemoBanner />
           <Navbar />
           <div className="flex-1 mt-20">
-            {children}
+            <SeedRunner>
+              {children}
+            </SeedRunner>
           </div>
           <Footer />
         </ThemeProvider>

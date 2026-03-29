@@ -36,19 +36,7 @@ export const AdminSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleLogout = async () => {
-    if (window.confirm("Log out of admin panel?")) {
-      const toastId = toast.loading("Logging out...");
-      try {
-        await account.deleteSession("current");
-        toast.success("Logged out successfully", { id: toastId });
-        router.push("/login");
-      } catch (err) {
-        console.error(err);
-        toast.error("Failed to log out", { id: toastId });
-      }
-    }
-  };
+
 
   return (
     <aside className="hidden md:flex flex-col w-[260px] bg-brand-primary h-screen sticky top-0 shrink-0 shadow-lg">
@@ -115,12 +103,6 @@ export const AdminSidebar = () => {
               </p>
             </div>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="w-full py-2 bg-white/5 border border-white/10 text-brand-light/70 rounded-lg font-bold text-sm hover:text-white hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-center gap-2"
-          >
-            <LogOut size={16} /> Sign Out
-          </button>
         </div>
       </div>
     </aside>

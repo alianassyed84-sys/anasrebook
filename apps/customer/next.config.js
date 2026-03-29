@@ -4,12 +4,12 @@ const nextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
-      { protocol: "https", hostname: "firebasestorage.googleapis.com" },
-      { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "covers.openlibrary.org" },
       { protocol: "https", hostname: "books.google.com" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "firebasestorage.googleapis.com" },
       { protocol: "https", hostname: "placehold.co" },
-      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
   },
 };
