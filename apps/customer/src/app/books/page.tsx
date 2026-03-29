@@ -27,13 +27,13 @@ function BookCard({ book }: { book: any }) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
     const exists = cart.find((item: any) => item.$id === book.$id);
     if (!exists) {
       cart.push(book);
-      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem("ri_cart", JSON.stringify(cart));
       toast.success("📚 Added to cart!");
-      window.dispatchEvent(new Event("cartUpdated"));
+      window.dispatchEvent(new Event("cart-updated"));
     } else {
       toast.error("Already in cart!");
     }

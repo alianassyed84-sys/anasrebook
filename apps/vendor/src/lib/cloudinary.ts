@@ -5,10 +5,12 @@ const PRESET =
   "rebookindia_uploads";
 
 // Upload image → returns Cloudinary URL
-export async function uploadImage(
+export async function uploadToCloudinary(
   file: File,
-  folder = "rebookindia/books"
-): Promise<string> {
+  folder: string = "rebookindia"
+): Promise<{ url: string; publicId: string }> {
+  const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
+  const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "rebookindia_uploads";
   const form = new FormData();
   form.append("file", file);
   form.append("upload_preset", PRESET);
@@ -18,15 +20,20 @@ export async function uploadImage(
     `https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`,
     { method: "POST", body: form }
   );
-  
   const data = await res.json();
-  if (!res.ok) {
-    console.error("Cloudinary error:", data);
-    throw new Error(data?.error?.message || "Upload failed");
-  }
-  
-  return data.secure_url;
+  if (!res.ok) throw new Error(data?.error?.message || "Upload failed");
+  return { url: data.secure_url, publicId: data.public_id };
 }
+
+// Keep uploadImage for backward compatibility if needed, but update it to use the same logic
+export async function uploadImage(
+  file: File,
+  folder = "rebookindia/books"
+): Promise<string> {
+  const res = await uploadToCloudinary(file, folder);
+  return res.url;
+}
+
 
 // Get optimized URL from Cloudinary
 export function optimizeImage(

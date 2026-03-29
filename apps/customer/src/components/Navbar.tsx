@@ -40,10 +40,27 @@ export const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const [cartCount, setCartCount] = useState(0);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    // Load cart count
+    const cart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
+    setCartCount(cart.length);
+
+    // Listen for cart updates
+    const handleCartUpdate = () => {
+      const updatedCart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
+      setCartCount(updatedCart.length);
+    };
+    window.addEventListener("cart-updated", handleCartUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("cart-updated", handleCartUpdate);
+    };
   }, []);
 
   useEffect(() => {
@@ -159,7 +176,11 @@ export const Navbar = () => {
             {/* Cart */}
             <Link href="/cart" className="p-2 hover:bg-brand-background dark:hover:bg-[#1a2744] rounded-full transition-colors relative group">
               <ShoppingCart size={22} className="text-gray-600 dark:text-gray-300 group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition-colors" />
-              <span className="absolute top-1 right-1 w-4 h-4 bg-brand-accent text-[10px] font-bold text-white rounded-full flex items-center justify-center">0</span>
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-brand-accent text-[10px] font-bold text-white rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             {/* Admin Panel Button — only for admin/superAdmin */}

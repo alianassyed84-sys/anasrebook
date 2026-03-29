@@ -35,14 +35,14 @@ function BookCard({ book }: { book: Book }) {
     e.preventDefault();
     e.stopPropagation();
     
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const exists = cart.find((item: any) => item.id === book.id);
+    const ri_cart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
+    const exists = ri_cart.find((item: any) => item.id === book.id);
     
     if (!exists) {
-      cart.push(book);
-      localStorage.setItem("cart", JSON.stringify(cart));
+      ri_cart.push(book);
+      localStorage.setItem("ri_cart", JSON.stringify(ri_cart));
       toast.success("📚 Added to cart!");
-      window.dispatchEvent(new Event("cartUpdated"));
+      window.dispatchEvent(new Event("cart-updated"));
     } else {
       toast.error("Already in cart!");
     }

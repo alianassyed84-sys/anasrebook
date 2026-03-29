@@ -45,11 +45,13 @@ function toScrollFormat(books: any[]) {
 }
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
   const [schoolBooks, setSchoolBooks] = useState<any[]>([]);
   const [neetBooks, setNeetBooks] = useState<any[]>([]);
   const [allBooks, setAllBooks] = useState<any[]>([]);
 
   useEffect(() => {
+    setMounted(true);
     const fetchData = async () => {
       try {
         const [allRes, schoolRes, neetRes] = await Promise.all([
@@ -66,6 +68,15 @@ export default function Home() {
     };
     fetchData();
   }, []);
+
+  if (!mounted) {
+    return (
+      <main className="flex min-h-screen flex-col bg-white">
+        <Hero />
+        <div className="h-96" /> {/* Placeholder */}
+      </main>
+    );
+  }
 
   return (
     <main className="flex min-h-screen flex-col">

@@ -54,7 +54,7 @@ function CheckoutContent() {
         .then(book => setCartItems([book]))
         .catch(() => toast.error("Book not found"));
     } else {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const cart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
       setCartItems(cart);
     }
   }, [bookIdParam, router]);
@@ -166,8 +166,8 @@ function CheckoutContent() {
       );
 
       const results = await Promise.all(orderPromises);
-      localStorage.removeItem("cart");
-      window.dispatchEvent(new Event("cartUpdated"));
+      localStorage.removeItem("ri_cart");
+      window.dispatchEvent(new Event("cart-updated"));
       toast.success("🎉 Order placed successfully!");
       router.push("/order-success?orderId=" + (results[0]?.$id || orderId));
     } catch (err) {

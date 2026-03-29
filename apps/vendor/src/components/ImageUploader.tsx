@@ -1,10 +1,10 @@
 "use client";
 import { useState, useRef } from "react";
-import { uploadImage } from "@/lib/cloudinary";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 import { Upload, X, Loader2, CheckCircle } from "lucide-react";
 
 interface Props {
-  onUpload:    (url: string) => void;
+  onUpload:    (url: string, publicId?: string) => void;
   onRemove?:   () => void;
   currentUrl?: string;
   folder?:     string;
@@ -38,10 +38,11 @@ export default function ImageUploader({
     reader.readAsDataURL(file);
 
     try {
-      const cloudUrl = await uploadImage(file, folder);
-      setUrl(cloudUrl);
-      onUpload(cloudUrl);
+      const result = await uploadToCloudinary(file, folder);
+      setUrl(result.url);
+      onUpload(result.url, result.publicId);
     } catch (err: any) {
+
       console.error(err);
       setError(`ERR: ${err?.message || err} `);
     } finally {

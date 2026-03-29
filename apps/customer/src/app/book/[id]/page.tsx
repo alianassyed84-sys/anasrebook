@@ -33,10 +33,10 @@ export default function BookDetailPage() {
                 setIsLoggedIn(false);
             }
             
-            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+            const cart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
             setCartItems(cart.map((i: any) => i.$id || i.id));
             
-            const wl = JSON.parse(localStorage.getItem("wishlist") || "[]");
+            const wl = JSON.parse(localStorage.getItem("ri_wishlist") || "[]");
             setWishlistItems(wl);
         };
         fetchInitial();
@@ -88,12 +88,12 @@ export default function BookDetailPage() {
 
     const hasItem = (id: string) => cartItems.includes(id);
     const addItem = (b: any) => {
-        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        const cart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
         if (!hasItem(b.$id || b.id)) {
             cart.push(b);
-            localStorage.setItem("cart", JSON.stringify(cart));
+            localStorage.setItem("ri_cart", JSON.stringify(cart));
             setCartItems([...cartItems, b.$id || b.id]);
-            window.dispatchEvent(new Event("cartUpdated"));
+            window.dispatchEvent(new Event("cart-updated"));
         }
     };
     
@@ -106,7 +106,7 @@ export default function BookDetailPage() {
             current.push(id);
         }
         setWishlistItems(current);
-        localStorage.setItem("wishlist", JSON.stringify(current));
+        localStorage.setItem("ri_wishlist", JSON.stringify(current));
     };
 
     if (!isLoaded) return <div className="min-h-[50vh] flex items-center justify-center">Loading book details...</div>;

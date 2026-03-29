@@ -24,7 +24,7 @@ export default function CartPage() {
   
   const fetchCartItems = useCallback(async () => {
     setLoading(true);
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = JSON.parse(localStorage.getItem("ri_cart") || "[]");
     if (cart.length === 0) {
       setItems([]);
       setLoading(false);
@@ -48,7 +48,7 @@ export default function CartPage() {
       const validItems = freshItems.filter(item => item !== null);
       setItems(validItems);
       // Update localStorage with fresh data
-      localStorage.setItem("cart", JSON.stringify(validItems));
+      localStorage.setItem("ri_cart", JSON.stringify(validItems));
     } catch (err) {
       console.error("Cart fetch failed", err);
       setItems(cart); // Fallback to local data
@@ -69,8 +69,8 @@ export default function CartPage() {
   const removeItem = (id: string) => {
     const updated = items.filter(item => (item.$id || item.id) !== id);
     setItems(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
-    window.dispatchEvent(new Event("cartUpdated"));
+    localStorage.setItem("ri_cart", JSON.stringify(updated));
+    window.dispatchEvent(new Event("cart-updated"));
     toast.success("Item removed");
   };
 
