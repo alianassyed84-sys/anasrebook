@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd ../.. && npx turbo run build --filter=customer",
+  "outputDirectory": ".next",
+  "ignoreCommand": "git log -1 --format=%s | grep -q \"\\[skip ci\\]\""
+}
